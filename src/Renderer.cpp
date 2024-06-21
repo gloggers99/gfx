@@ -38,6 +38,16 @@ void Renderer::swapBuffers() {
     glfwSwapBuffers(this->window);
 }
 
+void Renderer::loop(std::function<void(int)> loopFunction) {
+    while (!this->shouldClose()) {
+        this->currentFrame = glfwGetTime();
+        this->deltaTime = this->currentFrame - this->lastFrame;
+        this->lastFrame = this->currentFrame;
+        loopFunction(1);
+        glfwPollEvents();
+    }
+}
+
 Renderer::Renderer() {
     if (!glfwInit())
         throw std::runtime_error("Failed to initialize GLFW");

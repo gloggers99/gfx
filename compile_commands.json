@@ -1,0 +1,14 @@
+[
+{
+  "directory": "/home/lucas/src/gfx/cmake-build-debug",
+  "command": "/usr/bin/c++  -I/home/lucas/src/gfx/include -std=gnu++17 -o CMakeFiles/gfx.dir/src/Renderer.cpp.o -c /home/lucas/src/gfx/src/Renderer.cpp",
+  "file": "/home/lucas/src/gfx/src/Renderer.cpp",
+  "output": "CMakeFiles/gfx.dir/src/Renderer.cpp.o"
+},
+{
+  "directory": "/home/lucas/src/gfx/cmake-build-debug",
+  "command": "/usr/bin/c++  -I/home/lucas/src/gfx/include -std=gnu++17 -o CMakeFiles/gfx.dir/test/main.cpp.o -c /home/lucas/src/gfx/test/main.cpp",
+  "file": "/home/lucas/src/gfx/test/main.cpp",
+  "output": "CMakeFiles/gfx.dir/test/main.cpp.o"
+}
+]

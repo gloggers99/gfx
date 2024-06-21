@@ -4,12 +4,13 @@
 int main() {
     GFX::Renderer renderer = GFX::Renderer();
 
-    while (!renderer.shouldClose()) {
+    auto draw = [&renderer](int deltaTime) {
         renderer.clear();
         renderer.clearColor(0.2f, 0.3f, 0.3f, 1.0f);
         renderer.swapBuffers();
-        glfwPollEvents();
-    }
+    };
+
+    renderer.loop(draw);
 
     return 0;
 }
