@@ -8,24 +8,24 @@ int main() {
     GFX::Renderer renderer = GFX::Renderer();
 
     GFX::Shader shader = GFX::Shader(
-    R"(
-        #version 330
+        R"(
+            #version 330
 
-        layout (location = 0) in vec3 aPos;
+            layout (location = 0) in vec3 aPos;
 
-        void main() {
-            gl_Position = vec4(aPos, 1.0);
-        }
-    )", 
-    R"(
-        #version 330
+            void main() {
+                gl_Position = vec4(aPos, 1.0);
+            }
+        )", 
+        R"(
+            #version 330
 
-        out vec4 FragColor;
+            out vec4 FragColor;
 
-        void main() {
-            FragColor = vec4(1.0, 0.0, 0.0, 1.0);
-        }
-    )"
+            void main() {
+                FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+            }
+        )"
     );
 
     float vertices[] = {
