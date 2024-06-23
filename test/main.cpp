@@ -27,19 +27,36 @@ int main() {
         )"
     );
 
+    /*
     float vertices[] = {
         0.5, -0.5, 0.0,
         -0.5, -0.5, 0.0,
         0.0, 0.5, 0.0
     };
+    */
+
+    float vertices[] = {
+        0.5, 0.5, 0.0,
+        0.5, -0.5, 0.0,
+        -0.5, -0.5, 0.0,
+        -0.5, 0.5, 0.0
+    };
+
+    unsigned int indices[] = {
+        0, 1, 3,
+        2, 3, 1
+    };
 
     GFX::VAO vao = GFX::VAO();
     GFX::VBO vbo = GFX::VBO();
+    GFX::EBO ebo = GFX::EBO();
 
     vao.bind();
     vbo.bind();
     vbo.setBufferData(vertices, sizeof(vertices));
     vbo.setAttribPointer(0, 3, 3 * sizeof(float), 0);
+    ebo.bind();
+    ebo.setBufferData(indices, sizeof(indices));
     vao.unbind();
 
     auto draw = [&renderer, &shader, &vao](int deltaTime) {
@@ -48,7 +65,7 @@ int main() {
 
         shader.use();
         vao.bind();
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         renderer.swapBuffers();
     };
