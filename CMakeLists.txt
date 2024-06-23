@@ -7,6 +7,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 include_directories(include)
 add_executable(gfx 
     src/Renderer.cpp
+    src/Shader.cpp
 
     test/main.cpp)
 target_link_libraries(gfx glfw)
