@@ -1,5 +1,4 @@
-#include "../src/Renderer.hpp"
-#include "../src/Shader.hpp"
+#include "../src/GFX.hpp"
 
 #include <GLFW/glfw3.h>
 #include <string>
