@@ -9,5 +9,9 @@ add_executable(gfx
     src/Renderer.cpp
     src/Shader.cpp
 
+    src/vo/VAO.cpp
+    src/vo/VBO.cpp
+    src/vo/EBO.cpp
+
     test/main.cpp)
 target_link_libraries(gfx glfw)

@@ -33,26 +33,21 @@ int main() {
         0.0, 0.5, 0.0
     };
 
-    GLuint vao, vbo;
-    glGenVertexArrays(1, &vao);
-    glGenBuffers(1, &vbo);
+    GFX::VAO vao = GFX::VAO();
+    GFX::VBO vbo = GFX::VBO();
 
-    glBindVertexArray(vao);
-    
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    vao.bind();
+    vbo.bind();
+    vbo.setBufferData(vertices, sizeof(vertices));
+    vbo.setAttribPointer(0, 3, 3 * sizeof(float), 0);
+    vao.unbind();
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    glBindVertexArray(0);
-
-    auto draw = [&renderer, &shader, vao](int deltaTime) {
+    auto draw = [&renderer, &shader, &vao](int deltaTime) {
         renderer.clear();
         renderer.clearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
         shader.use();
-        glBindVertexArray(vao);
+        vao.bind();
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
         renderer.swapBuffers();
