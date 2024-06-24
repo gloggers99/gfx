@@ -2,6 +2,7 @@
 
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
 #include <string>
 
@@ -12,8 +13,12 @@ private:
     GLuint vertexShader, fragmentShader;
     GLuint shaderProgram;
 
+    GLint getUniformLocation(const std::string &uniformName);
+
 public:
     void use();
+    void updateUniform(const std::string &uniformName, float r, float g, float b, float a);
+    void updateUniform(const std::string &uniformName, glm::mat4 mat4);
 
     Shader(const std::string &vertexShader = R"(
             #version 330

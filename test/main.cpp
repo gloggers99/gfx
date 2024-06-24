@@ -3,7 +3,28 @@
 int main() {
     GFX::Renderer renderer = GFX::Renderer();
 
-    GFX::Shader shader = GFX::Shader();
+    GFX::Shader shader = GFX::Shader(
+        R"(
+            #version 330
+
+            layout (location = 0) in vec3 aPos;
+
+            void main() {
+                gl_Position = vec4(aPos, 1.0);
+            }
+        )",
+        R"(
+            #version 330
+
+            out vec4 FragColor;
+
+            uniform vec4 color;
+
+            void main() {
+                FragColor = color;
+            }
+        )"
+    );
 
     float vertices[] = {
         0.5, -0.5, 0.0,
@@ -25,6 +46,7 @@ int main() {
         renderer.clearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
         shader.use();
+        shader.updateUniform("color", 1.0, 1.0, 0.0, 1.0);
         vao.bind();
         glDrawArrays(GL_TRIANGLES, 0, 3);
 

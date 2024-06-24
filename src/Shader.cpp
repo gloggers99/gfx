@@ -2,14 +2,35 @@
 
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
+#include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>
+#include <stdexcept>
 #include <string>
 
 namespace GFX {
 
+GLint Shader::getUniformLocation(const std::string &uniformName) {
+    GLint uniformLocation = glGetUniformLocation(this->shaderProgram, uniformName.c_str());
+    if (uniformLocation == -1)
+        throw std::runtime_error("uniform named \"" + uniformName + "\" doesn't exist.");
+    return uniformLocation;
+}
+
 void Shader::use() {
     glUseProgram(this->shaderProgram);
+}
+
+void Shader::updateUniform(const std::string &uniformName, float r, float g, float b, float a) {
+    GLint location = this->getUniformLocation(uniformName);
+    this->use();
+    glUniform4f(location, r, g, b, a);
+}
+
+void Shader::updateUniform(const std::string &uniformName, glm::mat4 mat4) {
+    GLint location = this->getUniformLocation(uniformName);
+    this->use();
+    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat4));
 }
 
 Shader::Shader(const std::string &vertexShader, const std::string &fragmentShader) {
