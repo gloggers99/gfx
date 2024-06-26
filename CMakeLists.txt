@@ -8,6 +8,7 @@ include_directories(include)
 add_executable(gfx 
     src/Renderer.cpp
     src/Shader.cpp
+    src/Camera.cpp
 
     src/vo/VAO.cpp
     src/vo/VBO.cpp

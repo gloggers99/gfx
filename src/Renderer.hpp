@@ -22,6 +22,14 @@ private:
     static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
 
 public:
+    GLint getKey(int key);
+
+    void getSize(int *width, int *height);
+    void getCursorPos(double *xpos, double *ypos);
+
+    void showCursor();
+    void hideCursor();
+
     void clear(GLint mask = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     void clearColor(float r = 0.0f, float g = 0.0f, float b = 0.0f, float a = 1.0f);
 

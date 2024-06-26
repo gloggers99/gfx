@@ -22,6 +22,26 @@ void Renderer::key_callback(GLFWwindow *window, int key, int scancode, int actio
         glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
 
+GLint Renderer::getKey(int key) {
+    return glfwGetKey(this->window, key);
+}
+
+void Renderer::getSize(int *width, int *height) {
+    glfwGetFramebufferSize(this->window, width, height);
+}
+
+void Renderer::getCursorPos(double *xpos, double *ypos) {
+    glfwGetCursorPos(this->window, xpos, ypos);
+}
+
+void Renderer::showCursor() {
+    glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+}
+
+void Renderer::hideCursor() {
+    glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+}
+
 void Renderer::clear(GLint mask) {
     glClear(mask);
 }
@@ -56,6 +76,7 @@ Renderer::Renderer() {
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_FLOATING, 1);
 
     this->window = glfwCreateWindow(640, 480, "gfx", nullptr, nullptr);
 
