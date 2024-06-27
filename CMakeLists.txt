@@ -9,6 +9,9 @@ add_executable(gfx
     src/Renderer.cpp
     src/Shader.cpp
     src/Camera.cpp
+    src/Texture.cpp
+
+    src/obj/Cube.cpp
 
     src/vo/VAO.cpp
     src/vo/VBO.cpp

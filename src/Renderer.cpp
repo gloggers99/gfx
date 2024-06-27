@@ -89,6 +89,7 @@ Renderer::Renderer() {
     gladLoadGL(glfwGetProcAddress);
     
     glViewport(0, 0, 640, 480);
+    glEnable(GL_DEPTH_TEST);
 }
 
 Renderer::~Renderer() {
