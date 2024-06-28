@@ -76,20 +76,6 @@ int main() {
                 vec3 lightDir = normalize(lightPos - FragPos);
                 float distanceToLight = length(lightPos - FragPos);
 
-                float shadowFactor = 1.0;
-
-                vec3 rayOrigin = FragPos + 0.001 * lightDir;
-                float rayLength = distanceToLight;
-                vec3 rayEnd = lightPos;
-
-                for (float t = 0.0; t < rayLength; t += 0.1) {
-                    vec3 samplePoint = rayOrigin + t * lightDir;
-                    if (samplePoint is inside an object) {
-                        shadowFactor = 0.0; // Fragment is in shadow
-                        break;
-                    }
-                }
-
                 float ambientStrength = 0.1;
                 vec3 ambient = ambientStrength * lightColor;
 
@@ -104,7 +90,7 @@ int main() {
                 vec3 specular = specularStrength * spec * lightColor;
 
                 // Final color calculation with shadow factor
-                vec3 lighting = (ambient + (1.0 - shadowFactor) * (diffuse + specular)) * objectColor;
+                vec3 lighting = (ambient + diffuse + specular) * objectColor;
                 FragColor = vec4(lighting, 1.0);     
             } 
         )"
@@ -229,8 +215,11 @@ int main() {
         cube1.draw();
 
         //cube2.setTransform(lightPos, glm::vec3(0.2f), glm::radians(0.0f), glm::vec3(0.0f));
+        lightPos.x = sin(glfwGetTime()) * 2;
+        lightPos.z = cos(glfwGetTime()) * 2;
         glm::mat4 transform = glm::mat4(1.0f);
         transform = glm::translate(transform, lightPos);
+        transform = glm::scale(transform, glm::vec3(0.2f));
         cube2.setTransform(transform);
         cube2.draw();
 
