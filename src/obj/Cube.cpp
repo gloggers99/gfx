@@ -69,12 +69,15 @@ void Cube::rotate(float angle, glm::vec3 axis) {
     this->transform = glm::rotate(this->transform, angle, axis);
 }
 
-void Cube::setTransform(glm::vec3 translation, glm::vec3 scale, float angle, glm::vec3 axis) {
-    this->transform = glm::mat4(1.0f);
-    this->transform = glm::translate(this->transform, translation);
-    this->transform = glm::scale(this->transform, scale);
-    this->transform = glm::rotate(this->transform, angle, axis);
+// TODO: fix everything
+void Cube::setTransform(glm::mat4 transform) {
+    this->transform = transform;
 }
+
+glm::mat4 Cube::getTransform() {
+    return this->transform;
+}
+
 
 void Cube::setTexture(Texture *texture) {
     this->topTexture = texture;

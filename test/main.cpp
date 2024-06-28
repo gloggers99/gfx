@@ -41,10 +41,9 @@ int main() {
         R"(
             #version 330 core
             layout (location = 0) in vec3 aPos;
-            layout (location = 1) in vec3 aNormal;
 
             out vec3 FragPos;
-            out vec3 Normal;
+            //out vec3 Normal;
 
             uniform mat4 transform;
             uniform mat4 camera;
@@ -52,7 +51,7 @@ int main() {
             void main()
             {
                 FragPos = vec3(transform * vec4(aPos, 1.0));
-                Normal = mat3(transpose(inverse(transform))) * aNormal;  
+                //Normal = normalize(mat3(transpose(inverse(transform))) * aPos);
                 
                 gl_Position = camera * vec4(FragPos, 1.0);
             }
@@ -61,7 +60,6 @@ int main() {
             #version 330 core
             out vec4 FragColor;
 
-            in vec3 Normal;  
             in vec3 FragPos;  
               
             uniform vec3 lightPos; 
@@ -71,25 +69,43 @@ int main() {
 
             void main()
             {
-                // ambient
+                vec3 dFdxPos = dFdx(FragPos);
+                vec3 dFdyPos = dFdy(FragPos);
+                vec3 normal = normalize(cross(dFdxPos, dFdyPos));
+
+                vec3 lightDir = normalize(lightPos - FragPos);
+                float distanceToLight = length(lightPos - FragPos);
+
+                float shadowFactor = 1.0;
+
+                vec3 rayOrigin = FragPos + 0.001 * lightDir;
+                float rayLength = distanceToLight;
+                vec3 rayEnd = lightPos;
+
+                for (float t = 0.0; t < rayLength; t += 0.1) {
+                    vec3 samplePoint = rayOrigin + t * lightDir;
+                    if (samplePoint is inside an object) {
+                        shadowFactor = 0.0; // Fragment is in shadow
+                        break;
+                    }
+                }
+
                 float ambientStrength = 0.1;
                 vec3 ambient = ambientStrength * lightColor;
-                
-                // diffuse 
-                vec3 norm = normalize(Normal);
-                vec3 lightDir = normalize(lightPos - FragPos);
+
+                vec3 norm = normalize(normal);
                 float diff = max(dot(norm, lightDir), 0.0);
                 vec3 diffuse = diff * lightColor;
-                
-                // specular
+
                 float specularStrength = 0.5;
                 vec3 viewDir = normalize(viewPos - FragPos);
-                vec3 reflectDir = reflect(-lightDir, norm);  
+                vec3 reflectDir = reflect(-lightDir, norm);
                 float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
-                vec3 specular = specularStrength * spec * lightColor;  
-                    
-                vec3 result = (ambient + diffuse + specular) * objectColor;
-                FragColor = vec4(result, 1.0);
+                vec3 specular = specularStrength * spec * lightColor;
+
+                // Final color calculation with shadow factor
+                vec3 lighting = (ambient + (1.0 - shadowFactor) * (diffuse + specular)) * objectColor;
+                FragColor = vec4(lighting, 1.0);     
             } 
         )"
     );
@@ -197,8 +213,6 @@ int main() {
 
     GFX::Cube cube1 = GFX::Cube(lightingShader);
     GFX::Cube cube2 = GFX::Cube(lightingCubeShader);
-    cube2.translate(lightPos);
-    cube2.scale(glm::vec3(0.2f));
 
     auto draw = [&renderer, &camera, &lightingShader, &lightingCubeShader, &lightPos, &cubeVAO, &lightCubeVAO, &cube1, &cube2](int deltaTime) {
         renderer.clear();
@@ -213,6 +227,11 @@ int main() {
         lightingCubeShader.updateUniform("camera", camera.createCameraMatrix(&renderer));
         
         cube1.draw();
+
+        //cube2.setTransform(lightPos, glm::vec3(0.2f), glm::radians(0.0f), glm::vec3(0.0f));
+        glm::mat4 transform = glm::mat4(1.0f);
+        transform = glm::translate(transform, lightPos);
+        cube2.setTransform(transform);
         cube2.draw();
 
         /*

@@ -47,7 +47,8 @@ public:
     void scale(glm::vec3 scale);
     void rotate(float angle, glm::vec3 axis);
 
-    void setTransform(glm::vec3 translation, glm::vec3 scale, float angle, glm::vec3 axis);
+    void setTransform(glm::mat4 transform);
+    glm::mat4 getTransform();
 
     void setTexture(Texture *texture); // set all sides to the same texture
     void setTexture(Texture *texture, Face face); // set a specific side to a texture
