@@ -1,5 +1,8 @@
 #include "../src/GFX.hpp"
+#include <GL/gl.h>
 #include <GLFW/glfw3.h>
+#include <glm/ext/matrix_transform.hpp>
+#include <glm/trigonometric.hpp>
 
 int main() {
     GFX::Renderer renderer = GFX::Renderer();
@@ -34,32 +37,205 @@ int main() {
         )"
     );
 
+    GFX::Shader lightingShader = GFX::Shader(
+        R"(
+            #version 330 core
+            layout (location = 0) in vec3 aPos;
+            layout (location = 1) in vec3 aNormal;
+
+            out vec3 FragPos;
+            out vec3 Normal;
+
+            uniform mat4 transform;
+            uniform mat4 camera;
+
+            void main()
+            {
+                FragPos = vec3(transform * vec4(aPos, 1.0));
+                Normal = mat3(transpose(inverse(transform))) * aNormal;  
+                
+                gl_Position = camera * vec4(FragPos, 1.0);
+            }
+        )",
+        R"(
+            #version 330 core
+            out vec4 FragColor;
+
+            in vec3 Normal;  
+            in vec3 FragPos;  
+              
+            uniform vec3 lightPos; 
+            uniform vec3 viewPos; 
+            uniform vec3 lightColor;
+            uniform vec3 objectColor;
+
+            void main()
+            {
+                // ambient
+                float ambientStrength = 0.1;
+                vec3 ambient = ambientStrength * lightColor;
+                
+                // diffuse 
+                vec3 norm = normalize(Normal);
+                vec3 lightDir = normalize(lightPos - FragPos);
+                float diff = max(dot(norm, lightDir), 0.0);
+                vec3 diffuse = diff * lightColor;
+                
+                // specular
+                float specularStrength = 0.5;
+                vec3 viewDir = normalize(viewPos - FragPos);
+                vec3 reflectDir = reflect(-lightDir, norm);  
+                float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+                vec3 specular = specularStrength * spec * lightColor;  
+                    
+                vec3 result = (ambient + diffuse + specular) * objectColor;
+                FragColor = vec4(result, 1.0);
+            } 
+        )"
+    );
+
+    GFX::Shader lightingCubeShader = GFX::Shader(
+        R"(
+            #version 330 core
+            layout (location = 0) in vec3 aPos;
+
+            uniform mat4 transform;
+            uniform mat4 camera;
+
+            void main()
+            {
+                gl_Position = camera * transform * vec4(aPos, 1.0);
+            }
+        )",
+        R"(
+            #version 330 core
+            out vec4 FragColor;
+
+            void main()
+            {
+                FragColor = vec4(1.0); // set all 4 vector values to 1.0
+            }
+        )"
+    );
+
     GFX::Camera camera = GFX::Camera();
+
+    float vertices[] = {
+        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+         0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+
+        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+         0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+
+        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+
+         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+
+        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+         0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+
+        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+         0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+    };
+    // first, configure the cube's VAO (and VBO)
+    unsigned int VBO, cubeVAO;
+    glGenVertexArrays(1, &cubeVAO);
+    glGenBuffers(1, &VBO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glBindVertexArray(cubeVAO);
+
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    // normal attribute
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+
+    // second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
+    unsigned int lightCubeVAO;
+    glGenVertexArrays(1, &lightCubeVAO);
+    glBindVertexArray(lightCubeVAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    // note that we update the lamp's position attribute's stride to reflect the updated buffer data
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
 
     renderer.hideCursor();
     
-    float vertices[] = {
-        0.5, -0.5, 0.0,
-        -0.5, -0.5, 0.0,
-        0.0, 0.5, 0.0
-    };
-    GFX::Cube cube = GFX::Cube(shader);
+    glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
-    auto draw = [&renderer, &camera, &shader, &cube](int deltaTime) {
+    GFX::Cube cube1 = GFX::Cube(lightingShader);
+    GFX::Cube cube2 = GFX::Cube(lightingCubeShader);
+    cube2.translate(lightPos);
+    cube2.scale(glm::vec3(0.2f));
+
+    auto draw = [&renderer, &camera, &lightingShader, &lightingCubeShader, &lightPos, &cubeVAO, &lightCubeVAO, &cube1, &cube2](int deltaTime) {
         renderer.clear();
         renderer.clearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
-        shader.use();
-        shader.updateUniform("camera", camera.createCameraMatrix(&renderer));
-        shader.updateUniform("transform", glm::mat4(1.0f));
+        lightingShader.updateUniform("objectColor", 1.0f, 0.5f, 0.31f);
+        lightingShader.updateUniform("lightColor", 1.0f, 1.0f, 1.0f);
+        lightingShader.updateUniform("lightPos", lightPos);
+        lightingShader.updateUniform("viewPos", camera.getCameraPos());
+        lightingShader.updateUniform("camera", camera.createCameraMatrix(&renderer));
 
-        cube.setTransform(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::radians(glfwGetTime()) * 50, glm::vec3(0.0f, 1.0f, 1.0f));
-        cube.draw();
+        lightingCubeShader.updateUniform("camera", camera.createCameraMatrix(&renderer));
+        
+        cube1.draw();
+        cube2.draw();
+
+        /*
+        glm::mat4 transform = glm::mat4(1.0f);
+        lightingShader.updateUniform("transform", transform);
+
+        glBindVertexArray(cubeVAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        transform = glm::mat4(1.0f);
+        transform = glm::translate(transform, lightPos);
+        transform = glm::scale(transform, glm::vec3(0.2f));
+        lightingCubeShader.updateUniform("camera", camera.createCameraMatrix(&renderer));
+        lightingCubeShader.updateUniform("transform", transform);
+
+        glBindVertexArray(lightCubeVAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        */
 
         renderer.swapBuffers();
 
         // input
-        //camera.handleMouse(&renderer);
+        camera.handleMouse(&renderer);
         
         float cameraSpeed = 0.01 * deltaTime;
 

@@ -33,6 +33,18 @@ void Shader::updateUniform(const std::string &uniformName, glm::mat4 mat4) {
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat4));
 }
 
+void Shader::updateUniform(const std::string &uniformName, glm::vec3 vec3) {
+    GLint location = this->getUniformLocation(uniformName);
+    this->use();
+    glUniform3f(location, vec3.x, vec3.y, vec3.z);
+}
+
+void Shader::updateUniform(const std::string &uniformName, float x, float y, float z) {
+    GLint location = this->getUniformLocation(uniformName);
+    this->use();
+    glUniform3f(location, x, y, z);
+}
+
 Shader::Shader(const std::string &vertexShader, const std::string &fragmentShader) {
     int success;
     char buffer[512];

@@ -132,10 +132,10 @@ Cube::Cube(Shader &shader)
         //       the vertices in the future.
 
         float cubeVertices[] = {
-            0.5f,  0.5f, -0.5f,    0.5f, 0.5f,
-            0.5f, -0.5f, -0.5f,    0.5f, -0.5f,
-            -0.5f, -0.5f, -0.5f,   -0.5f, -0.5f,
-            -0.5f,  0.5f, -0.5f,   -0.5f, 0.5f
+            0.5f,  0.5f, -0.5f,    0.0f, 0.0f, -1.0f,    0.5f, 0.5f,
+            0.5f, -0.5f, -0.5f,    0.0f, 0.0f, -1.0f,    0.5f, -0.5f,
+            -0.5f, -0.5f, -0.5f,   0.0f, 0.0f, -1.0f,    -0.5f, -0.5f,
+            -0.5f,  0.5f, -0.5f,   0.0f, 0.0f, -1.0f,    -0.5f, 0.5f
         };
         unsigned int cubeIndices[] = { 
             0, 1, 3,
@@ -146,8 +146,9 @@ Cube::Cube(Shader &shader)
 
         this->vbo.bind();
         this->vbo.setBufferData(cubeVertices, sizeof(cubeVertices));
-        this->vbo.setAttribPointer(0, 3, 5 * sizeof(float), 0);
-        this->vbo.setAttribPointer(1, 2, 5 * sizeof(float), 3);
+        this->vbo.setAttribPointer(0, 3, 8 * sizeof(float), 0); // vertices
+        this->vbo.setAttribPointer(1, 3, 8 * sizeof(float), 3); // normals
+        this->vbo.setAttribPointer(2, 2, 8 * sizeof(float), 6); // texcoords
 
         this->ebo.bind();
         this->ebo.setBufferData(cubeIndices, sizeof(cubeIndices));

@@ -8,6 +8,10 @@
 
 namespace GFX {
 
+glm::vec3 Camera::getCameraPos() {
+    return this->cameraPos;
+}
+
 glm::mat4 Camera::createViewMatrix() {
     return glm::lookAt(this->cameraPos, this->cameraPos + this->cameraFront, this->cameraUp);
 }

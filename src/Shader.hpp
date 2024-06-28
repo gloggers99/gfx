@@ -19,6 +19,8 @@ public:
     void use();
     void updateUniform(const std::string &uniformName, float r, float g, float b, float a);
     void updateUniform(const std::string &uniformName, glm::mat4 mat4);
+    void updateUniform(const std::string &uniformName, glm::vec3 vec3);
+    void updateUniform(const std::string &uniformName, float x, float y, float z);
 
     Shader(const std::string &vertexShader = R"(
             #version 330
