@@ -65,6 +65,17 @@ void Cube::scale(glm::vec3 scale) {
     this->transform = glm::scale(this->transform, scale);
 }
 
+void Cube::rotate(float angle, glm::vec3 axis) {
+    this->transform = glm::rotate(this->transform, angle, axis);
+}
+
+void Cube::setTransform(glm::vec3 translation, glm::vec3 scale, float angle, glm::vec3 axis) {
+    this->transform = glm::mat4(1.0f);
+    this->transform = glm::translate(this->transform, translation);
+    this->transform = glm::scale(this->transform, scale);
+    this->transform = glm::rotate(this->transform, angle, axis);
+}
+
 void Cube::setTexture(Texture *texture) {
     this->topTexture = texture;
     this->bottomTexture = texture;
