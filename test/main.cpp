@@ -17,7 +17,7 @@ int main() {
     GFX::Shader testShader = GFX::Shader("defaultShader");
     GFX::Shader lightingShader = GFX::Shader("lightingShader");
 
-    GFX::Cube cube1 = GFX::Cube(testShader);
+    GFX::Cube cube1 = GFX::Cube(lightingShader);
     GFX::Cube cube2 = GFX::Cube(testShader);
     float r = 0.5f;
     float g = 0.5f;
@@ -25,7 +25,7 @@ int main() {
 
     bool compiled = true;
 
-    auto draw = [&compiled, &renderer, &camera, &lightPos, &cube1, &cube2, &r, &g, &b, &testShader](float deltaTime) {
+    auto draw = [&compiled, &renderer, &camera, &lightPos, &cube1, &cube2, &r, &g, &b, &testShader, &lightingShader](float deltaTime) {
         ImGui::Begin("testmenu");
 
         ImGui::SliderFloat("red", &r, 0.0f, 1.0f);
@@ -38,7 +38,7 @@ int main() {
         }
         if (ImGui::Button("Recompile Shader")) {
             std::cout << "recompiling shader\n";
-            if (!testShader.recompile()) {
+            if (!lightingShader.recompile()) {
                 compiled = false;
             } else {
                 compiled = true;
@@ -54,15 +54,13 @@ int main() {
 
         testShader.updateUniform("transform", glm::mat4(1.0f));
         testShader.updateUniform("camera", camera.createCameraMatrix(&renderer));
-/*
+
         lightingShader.updateUniform("objectColor", r, g, b);
         lightingShader.updateUniform("lightColor", 1.0f, 1.0f, 1.0f);
         lightingShader.updateUniform("lightPos", lightPos);
         lightingShader.updateUniform("viewPos", camera.getCameraPos());
         lightingShader.updateUniform("camera", camera.createCameraMatrix(&renderer));
 
-        lightingCubeShader.updateUniform("camera", camera.createCameraMatrix(&renderer));
-  */      
         glm::mat4 transform = glm::mat4(1.0f);
         transform = glm::rotate(transform, glm::radians((float)glfwGetTime() * 100), glm::vec3(1.0f, 1.0f, 0.0f));
         cube1.setTransform(transform);
