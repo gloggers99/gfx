@@ -4,7 +4,6 @@
 #include <GLFW/glfw3.h>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/trigonometric.hpp>
-#include <iostream>
 
 int main() {
     GFX::Renderer renderer = GFX::Renderer();
@@ -91,7 +90,6 @@ int main() {
                 float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
                 vec3 specular = specularStrength * spec * lightColor;
 
-                // Final color calculation with shadow factor
                 vec3 lighting = (ambient + diffuse + specular) * objectColor;
                 FragColor = vec4(lighting, 1.0);     
             } 
@@ -132,6 +130,8 @@ int main() {
     GFX::Cube cube2 = GFX::Cube(lightingCubeShader);
 
     auto draw = [&renderer, &camera, &lightingShader, &lightingCubeShader, &lightPos, &cube1, &cube2](float deltaTime) {
+        ImGui::Text("asdfasdfasdf");
+
         renderer.clear();
         renderer.clearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
@@ -143,12 +143,15 @@ int main() {
 
         lightingCubeShader.updateUniform("camera", camera.createCameraMatrix(&renderer));
         
+        glm::mat4 transform = glm::mat4(1.0f);
+        transform = glm::rotate(transform, glm::radians((float)glfwGetTime() * 100), glm::vec3(1.0f, 1.0f, 0.0f));
+        cube1.setTransform(transform);
         cube1.draw();
 
         lightPos.x = sin(glfwGetTime()) * 2;
         lightPos.y = sin(glfwGetTime()) * 2;
         lightPos.z = cos(glfwGetTime()) * 2;
-        glm::mat4 transform = glm::mat4(1.0f);
+        transform = glm::mat4(1.0f);
         transform = glm::translate(transform, lightPos);
         transform = glm::scale(transform, glm::vec3(0.2f));
         cube2.setTransform(transform);

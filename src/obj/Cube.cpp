@@ -69,7 +69,6 @@ void Cube::rotate(float angle, glm::vec3 axis) {
     this->transform = glm::rotate(this->transform, angle, axis);
 }
 
-// TODO: fix everything
 void Cube::setTransform(glm::mat4 transform) {
     this->transform = transform;
 }
@@ -77,7 +76,6 @@ void Cube::setTransform(glm::mat4 transform) {
 glm::mat4 Cube::getTransform() {
     return this->transform;
 }
-
 
 void Cube::setTexture(Texture *texture) {
     this->topTexture = texture;

@@ -14,7 +14,7 @@ int main() {
         we create an anonymous function to declare
         our rendering:
     */
-    auto draw = [&renderer](int deltaTime) {
+    auto draw = [&renderer](float deltaTime) {
         renderer.clear();
         renderer.clearColor(0.2, 0.3, 0.3, 1.0);
 
@@ -75,7 +75,7 @@ int main() {
     vbo.setAttribPointer(0, 3, 3 * sizeof(float), 0);
     vao.unbind();
 
-    auto draw = [&renderer, &shader, &vao](int deltaTime) {
+    auto draw = [&renderer, &shader, &vao](float deltaTime) {
         renderer.clear();
         renderer.clearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
