@@ -86,16 +86,64 @@ void Shader::use() {
 }
 
 bool Shader::recompile() {
-    GLint oldProgram = this->shaderProgram;
-    glUseProgram(0);
+    // Fetch new source code
     this->fetchSource();
-    if (!this->compile()) {
-        this->shaderProgram = oldProgram;
-        std::cerr << "Shader recompilation failed.\n";
-    } else {
-        glDeleteProgram(oldProgram);
-        std::cerr << "Shader recompiled successfully.\n";
+
+    // Compile new shaders
+    GLuint newVertexShader = glCreateShader(GL_VERTEX_SHADER);
+    const char *vertexSource = this->vertexSource.c_str();
+    glShaderSource(newVertexShader, 1, &vertexSource, nullptr);
+    glCompileShader(newVertexShader);
+    GLint success;
+    char buffer[512];
+    glGetShaderiv(newVertexShader, GL_COMPILE_STATUS, &success);
+    if (!success) {
+        glGetShaderInfoLog(newVertexShader, 512, nullptr, buffer);
+        std::cerr << "\nVertex shader failed to compile:\n\n" << buffer << "\n";
+        glDeleteShader(newVertexShader);
+        return false;
     }
+
+    GLuint newFragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    const char *fragmentSource = this->fragmentSource.c_str();
+    glShaderSource(newFragmentShader, 1, &fragmentSource, nullptr);
+    glCompileShader(newFragmentShader);
+    glGetShaderiv(newFragmentShader, GL_COMPILE_STATUS, &success);
+    if (!success) {
+        glGetShaderInfoLog(newFragmentShader, 512, nullptr, buffer);
+        std::cerr << "\nFragment shader failed to compile:\n\n" << buffer << "\n";
+        glDeleteShader(newVertexShader);
+        glDeleteShader(newFragmentShader);
+        return false;
+    }
+
+    // Create new shader program
+    GLuint newShaderProgram = glCreateProgram();
+    glAttachShader(newShaderProgram, newVertexShader);
+    glAttachShader(newShaderProgram, newFragmentShader);
+    glLinkProgram(newShaderProgram);
+    glGetProgramiv(newShaderProgram, GL_LINK_STATUS, &success);
+    if (!success) {
+        glGetProgramInfoLog(newShaderProgram, 512, nullptr, buffer);
+        std::cerr << "\nShader program linking failed:\n" << buffer << "\n";
+        glDeleteShader(newVertexShader);
+        glDeleteShader(newFragmentShader);
+        glDeleteProgram(newShaderProgram);
+        return false;
+    }
+
+    // If the new program was successfully compiled and linked, delete old program and shaders
+    glDeleteShader(this->vertexShader);
+    glDeleteShader(this->fragmentShader);
+    glDeleteProgram(this->shaderProgram);
+
+    // Assign new shader program and shaders
+    this->vertexShader = newVertexShader;
+    this->fragmentShader = newFragmentShader;
+    this->shaderProgram = newShaderProgram;
+
+    std::cerr << "Shader recompiled successfully.\n";
+    return true;
 }
 
 void Shader::updateUniform(const std::string &uniformName, float r, float g, float b, float a) {

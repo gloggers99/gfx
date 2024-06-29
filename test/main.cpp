@@ -23,7 +23,9 @@ int main() {
     float g = 0.5f;
     float b = 0.5f;
 
-    auto draw = [&renderer, &camera, &lightPos, &cube1, &cube2, &r, &g, &b, &testShader](float deltaTime) {
+    bool compiled = true;
+
+    auto draw = [&compiled, &renderer, &camera, &lightPos, &cube1, &cube2, &r, &g, &b, &testShader](float deltaTime) {
         ImGui::Begin("testmenu");
 
         ImGui::SliderFloat("red", &r, 0.0f, 1.0f);
@@ -36,8 +38,14 @@ int main() {
         }
         if (ImGui::Button("Recompile Shader")) {
             std::cout << "recompiling shader\n";
-            testShader.recompile();
+            if (!testShader.recompile()) {
+                compiled = false;
+            } else {
+                compiled = true;
+            }
         }
+        if (!compiled)
+            ImGui::Text("Shader failed to compile!!");
 
         ImGui::End();
 
