@@ -1,8 +1,10 @@
 #include "../src/GFX.hpp"
+#include "imgui.h"
 #include <GL/gl.h>
 #include <GLFW/glfw3.h>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/trigonometric.hpp>
+#include <iostream>
 
 int main() {
     GFX::Renderer renderer = GFX::Renderer();
@@ -122,14 +124,14 @@ int main() {
 
     GFX::Camera camera = GFX::Camera();
 
-    renderer.hideCursor();
+    //renderer.hideCursor();
     
     glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
     GFX::Cube cube1 = GFX::Cube(lightingShader);
     GFX::Cube cube2 = GFX::Cube(lightingCubeShader);
 
-    auto draw = [&renderer, &camera, &lightingShader, &lightingCubeShader, &lightPos, &cube1, &cube2](int deltaTime) {
+    auto draw = [&renderer, &camera, &lightingShader, &lightingCubeShader, &lightPos, &cube1, &cube2](float deltaTime) {
         renderer.clear();
         renderer.clearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
@@ -152,12 +154,10 @@ int main() {
         cube2.setTransform(transform);
         cube2.draw();
 
-        renderer.swapBuffers();
-
         // input
         camera.handleMouse(&renderer);
-        
-        float cameraSpeed = 0.01 * deltaTime;
+    
+        float cameraSpeed = 2.5 * deltaTime;
 
         if (renderer.getKey(GLFW_KEY_W) == GLFW_PRESS)
             camera.move(GFX::Direction::FORWARD, cameraSpeed);

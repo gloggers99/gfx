@@ -4,6 +4,10 @@
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
 
+#include <imgui.h>
+#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_opengl3.h>
+
 #include <iostream>
 #include <stdexcept>
 
@@ -58,12 +62,18 @@ void Renderer::swapBuffers() {
     glfwSwapBuffers(this->window);
 }
 
-void Renderer::loop(std::function<void(int)> loopFunction) {
+void Renderer::loop(std::function<void(float)> loopFunction) {
     while (!this->shouldClose()) {
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
         this->currentFrame = glfwGetTime();
         this->deltaTime = this->currentFrame - this->lastFrame;
         this->lastFrame = this->currentFrame;
-        loopFunction(1);
+        loopFunction(this->deltaTime);
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        this->swapBuffers();
         glfwPollEvents();
     }
 }
@@ -90,9 +100,24 @@ Renderer::Renderer() {
     
     glViewport(0, 0, 640, 480);
     glEnable(GL_DEPTH_TEST);
+
+    // setup imgui
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    
+    ImGuiIO &io = ImGui::GetIO();
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
+    ImGui_ImplGlfw_InitForOpenGL(this->window, true);
+    ImGui_ImplOpenGL3_Init();
 }
 
 Renderer::~Renderer() {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
     glfwDestroyWindow(this->window);
     glfwTerminate();
 }

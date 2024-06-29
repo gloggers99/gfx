@@ -36,7 +36,7 @@ public:
     bool shouldClose();
     void swapBuffers();
 
-    void loop(std::function<void(int)>);
+    void loop(std::function<void(float)>);
 
     Renderer();
     ~Renderer();
