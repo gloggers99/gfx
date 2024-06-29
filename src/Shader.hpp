@@ -16,12 +16,12 @@ private:
     std::string shaderName;
 
     GLint getUniformLocation(const std::string &uniformName);
-    void compile();
+    bool compile();
     void fetchSource();
 
 public:
     void use();
-    void recompile();
+    bool recompile();
     void updateUniform(const std::string &uniformName, float r, float g, float b, float a);
     void updateUniform(const std::string &uniformName, glm::mat4 mat4);
     void updateUniform(const std::string &uniformName, glm::vec3 vec3);

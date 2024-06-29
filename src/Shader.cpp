@@ -20,7 +20,7 @@ GLint Shader::getUniformLocation(const std::string &uniformName) {
     return uniformLocation;
 }
 
-void Shader::compile() {
+bool Shader::compile() {
     int success;
     char buffer[512];
 
@@ -33,6 +33,7 @@ void Shader::compile() {
     if (!success) {
         glGetShaderInfoLog(this->vertexShader, 512, nullptr, buffer);
         std::cerr << "\nVertex shader failed to compile:\n\n" << buffer << "\n";
+        return false;
     }
 
     // fragment shader
@@ -44,6 +45,7 @@ void Shader::compile() {
     if (!success) {
         glGetShaderInfoLog(this->fragmentShader, 512, nullptr, buffer);
         std::cerr << "\nFragment shader failed to compile:\n\n" << buffer << "\n";
+        return false;
     }
 
     // create program
@@ -55,8 +57,10 @@ void Shader::compile() {
     if (!success) {
         glGetProgramInfoLog(this->shaderProgram, 512, nullptr, buffer);
         std::cerr << "\nShader compiling error:\n" << buffer << "\n";
+        return false;
     }
 
+    return true;
 }
 
 void Shader::fetchSource() {
@@ -81,11 +85,17 @@ void Shader::use() {
     glUseProgram(this->shaderProgram);
 }
 
-void Shader::recompile() {
+bool Shader::recompile() {
+    GLint oldProgram = this->shaderProgram;
     glUseProgram(0);
-    glDeleteProgram(this->shaderProgram);
     this->fetchSource();
-    this->compile();
+    if (!this->compile()) {
+        this->shaderProgram = oldProgram;
+        std::cerr << "Shader recompilation failed.\n";
+    } else {
+        glDeleteProgram(oldProgram);
+        std::cerr << "Shader recompiled successfully.\n";
+    }
 }
 
 void Shader::updateUniform(const std::string &uniformName, float r, float g, float b, float a) {

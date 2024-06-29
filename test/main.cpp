@@ -1,6 +1,5 @@
 #include "../src/GFX.hpp"
 #include "imgui.h"
-#include <GL/gl.h>
 #include <GLFW/glfw3.h>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/trigonometric.hpp>
@@ -8,119 +7,6 @@
 
 int main() {
     GFX::Renderer renderer = GFX::Renderer();
-    /*
-    GFX::Shader shader = GFX::Shader(
-        R"(
-            #version 330
-
-            layout (location = 0) in vec3 aPos;
-            layout (location = 1) in vec2 aTexCoord;
-
-            uniform mat4 transform;
-            uniform mat4 camera;
-
-            out vec2 TexCoord;
-
-            void main() {
-                gl_Position = camera * transform * vec4(aPos, 1.0);
-                TexCoord = aTexCoord;
-            }
-        )",
-        R"(
-            #version 330
-
-            out vec4 FragColor;
-            in vec2 TexCoord;
-
-            uniform sampler2D Texture;
-
-            void main() {
-                FragColor = texture(Texture, TexCoord);
-            }
-        )"
-    );
-
-    GFX::Shader lightingShader = GFX::Shader(
-        R"(
-            #version 330 core
-            layout (location = 0) in vec3 aPos;
-
-            out vec3 FragPos;
-            //out vec3 Normal;
-
-            uniform mat4 transform;
-            uniform mat4 camera;
-
-            void main()
-            {
-                FragPos = vec3(transform * vec4(aPos, 1.0));
-                //Normal = normalize(mat3(transpose(inverse(transform))) * aPos);
-                
-                gl_Position = camera * vec4(FragPos, 1.0);
-            }
-        )",
-        R"(
-            #version 330 core
-            out vec4 FragColor;
-
-            in vec3 FragPos;  
-              
-            uniform vec3 lightPos; 
-            uniform vec3 viewPos; 
-            uniform vec3 lightColor;
-            uniform vec3 objectColor;
-
-            void main()
-            {
-                vec3 dFdxPos = dFdx(FragPos);
-                vec3 dFdyPos = dFdy(FragPos);
-                vec3 normal = normalize(cross(dFdxPos, dFdyPos));
-
-                vec3 lightDir = normalize(lightPos - FragPos);
-                float distanceToLight = length(lightPos - FragPos);
-
-                float ambientStrength = 0.1;
-                vec3 ambient = ambientStrength * lightColor;
-
-                vec3 norm = normalize(normal);
-                float diff = max(dot(norm, lightDir), 0.0);
-                vec3 diffuse = diff * lightColor;
-
-                float specularStrength = 0.5;
-                vec3 viewDir = normalize(viewPos - FragPos);
-                vec3 reflectDir = reflect(-lightDir, norm);
-                float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
-                vec3 specular = specularStrength * spec * lightColor;
-
-                vec3 lighting = (ambient + diffuse + specular) * objectColor;
-                FragColor = vec4(lighting, 1.0);     
-            } 
-        )"
-    );
-
-    GFX::Shader lightingCubeShader = GFX::Shader(
-        R"(
-            #version 330 core
-            layout (location = 0) in vec3 aPos;
-
-            uniform mat4 transform;
-            uniform mat4 camera;
-
-            void main()
-            {
-                gl_Position = camera * transform * vec4(aPos, 1.0);
-            }
-        )",
-        R"(
-            #version 330 core
-            out vec4 FragColor;
-
-            void main()
-            {
-                FragColor = vec4(1.0); // set all 4 vector values to 1.0
-            }
-        )"
-    );*/
 
     GFX::Camera camera = GFX::Camera();
 
@@ -129,6 +15,7 @@ int main() {
     glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
     GFX::Shader testShader = GFX::Shader("defaultShader");
+    GFX::Shader lightingShader = GFX::Shader("lightingShader");
 
     GFX::Cube cube1 = GFX::Cube(testShader);
     GFX::Cube cube2 = GFX::Cube(testShader);
