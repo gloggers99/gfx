@@ -128,14 +128,23 @@ int main() {
 
     GFX::Cube cube1 = GFX::Cube(lightingShader);
     GFX::Cube cube2 = GFX::Cube(lightingCubeShader);
+    float r = 0.5f;
+    float g = 0.5f;
+    float b = 0.5f;
 
-    auto draw = [&renderer, &camera, &lightingShader, &lightingCubeShader, &lightPos, &cube1, &cube2](float deltaTime) {
-        ImGui::Text("asdfasdfasdf");
+    auto draw = [&renderer, &camera, &lightingShader, &lightingCubeShader, &lightPos, &cube1, &cube2, &r, &g, &b](float deltaTime) {
+        ImGui::Begin("testmenu");
+
+        ImGui::SliderFloat("red", &r, 0.0f, 1.0f);
+        ImGui::SliderFloat("green", &g, 0.0f, 1.0f);
+        ImGui::SliderFloat("blue", &b, 0.0f, 1.0f);
+
+        ImGui::End();
 
         renderer.clear();
         renderer.clearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
-        lightingShader.updateUniform("objectColor", 1.0f, 0.5f, 0.31f);
+        lightingShader.updateUniform("objectColor", r, g, b);
         lightingShader.updateUniform("lightColor", 1.0f, 1.0f, 1.0f);
         lightingShader.updateUniform("lightPos", lightPos);
         lightingShader.updateUniform("viewPos", camera.getCameraPos());
