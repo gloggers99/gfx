@@ -9,3 +9,4 @@
 #include "Renderer.hpp"
 #include "Shader.hpp"
 #include "Camera.hpp"
+#include "Texture.hpp"
