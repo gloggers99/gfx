@@ -21,6 +21,7 @@ add_executable(gfx
     src/Shader.cpp
     src/Camera.cpp
     src/Texture.cpp
+    src/ShaderWatcher.cpp
 
     src/obj/Cube.cpp
 

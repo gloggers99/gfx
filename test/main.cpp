@@ -17,6 +17,9 @@ int main() {
     GFX::Shader testShader = GFX::Shader("defaultShader");
     GFX::Shader lightingShader = GFX::Shader("lightingShader");
 
+    GFX::ShaderWatcher watcher = GFX::ShaderWatcher();
+    watcher.attach(testShader);
+
     GFX::Cube cube1 = GFX::Cube(lightingShader);
     GFX::Cube cube2 = GFX::Cube(testShader);
     float r = 0.5f;

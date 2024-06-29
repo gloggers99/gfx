@@ -6,6 +6,8 @@
 
 #include <string>
 
+class ShaderWatcher {};
+
 namespace GFX {
 
 class Shader {
@@ -31,6 +33,8 @@ public:
     explicit Shader(const std::string &shaderName);
 
     ~Shader();
+
+    friend class ShaderWatcher;
 };
 
 }; // namespace GFX

@@ -10,3 +10,4 @@
 #include "Shader.hpp"
 #include "Camera.hpp"
 #include "Texture.hpp"
+#include "ShaderWatcher.hpp"
