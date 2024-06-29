@@ -143,7 +143,6 @@ int main() {
         
         cube1.draw();
 
-        //cube2.setTransform(lightPos, glm::vec3(0.2f), glm::radians(0.0f), glm::vec3(0.0f));
         lightPos.x = sin(glfwGetTime()) * 2;
         lightPos.y = sin(glfwGetTime()) * 2;
         lightPos.z = cos(glfwGetTime()) * 2;
@@ -152,23 +151,6 @@ int main() {
         transform = glm::scale(transform, glm::vec3(0.2f));
         cube2.setTransform(transform);
         cube2.draw();
-
-        /*
-        glm::mat4 transform = glm::mat4(1.0f);
-        lightingShader.updateUniform("transform", transform);
-
-        glBindVertexArray(cubeVAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        transform = glm::mat4(1.0f);
-        transform = glm::translate(transform, lightPos);
-        transform = glm::scale(transform, glm::vec3(0.2f));
-        lightingCubeShader.updateUniform("camera", camera.createCameraMatrix(&renderer));
-        lightingCubeShader.updateUniform("transform", transform);
-
-        glBindVertexArray(lightCubeVAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-        */
 
         renderer.swapBuffers();
 
