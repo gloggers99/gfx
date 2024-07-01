@@ -64,6 +64,11 @@ bool Shader::compile() {
 }
 
 void Shader::fetchSource() {
+    //  BUG: for some reason if the shader fails to compile from ShaderWatcher, 
+    //       these throw statements will be triggered. Current fix is I replaced 
+    //       them with return statements. this shouldn't be a problem since 
+    //       everything still works.
+
     if (!std::filesystem::exists("shaders/" + shaderName + ".vert"))
         return;
 

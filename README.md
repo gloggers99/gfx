@@ -2,6 +2,12 @@
 ## Getting Started
 ### What is GFX
 GFX is a simple C++ graphics library that uses GLFW to create a basic multiplatform window, then provide easy to use rendering tools using the GFX:: directive.
+### Features
+- [X] Easy to use VAO, VBO, and EBO classes
+- [ ] Texture System (needs to be redone)
+- [X] Automatic hot reloadable shader compilation
+- [X] Compatibility with ALL custom opengl drawing code (theoretically you could use GFX to load OpenGL then use OpenGL code to do the rest)
+- [X] Full ImGui implementation
 ### Hello World
 Our hello world consists of creating a renderer object, defining our render function, and passing it into the renderer.
 ```c++
@@ -98,6 +104,8 @@ int main() {
 }
 ```
 ## Shaders
+### !!! WARNING !!!
+this section needs to be rewritten as the current implementation of shaders is now easier and more efficient and the following information is outdated.
 ### What are shaders
 Shaders are a very complex topic, the basic rundown is vertex shaders describe how to draw each vertice inputted into opengl, and the fragment shader describes how to draw each fragment/pixel of your shape, and fills it in.
 ### What are the default shaders
