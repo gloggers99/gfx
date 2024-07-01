@@ -65,20 +65,22 @@ bool Shader::compile() {
 
 void Shader::fetchSource() {
     if (!std::filesystem::exists("shaders/" + shaderName + ".vert"))
-        throw std::runtime_error("vertex shader file doesn't exist.");
+        return;
 
     if (!std::filesystem::exists("shaders/" + shaderName + ".frag"))
-        throw std::runtime_error("fragment shader file doesn't exist.");
+        return;
 
     std::ifstream vertexFile("shaders/" + shaderName + ".vert");
     std::stringstream vertexStream;
     vertexStream << vertexFile.rdbuf();
     this->vertexSource = vertexStream.str();
+    vertexFile.close();
 
     std::ifstream fragmentFile("shaders/" + shaderName + ".frag");
     std::stringstream fragmentStream;
     fragmentStream << fragmentFile.rdbuf();
     this->fragmentSource = fragmentStream.str();
+    fragmentFile.close();
 }
 
 void Shader::use() {

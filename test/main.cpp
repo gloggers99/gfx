@@ -28,7 +28,9 @@ int main() {
 
     bool compiled = true;
 
-    auto draw = [&compiled, &renderer, &camera, &lightPos, &cube1, &cube2, &r, &g, &b, &testShader, &lightingShader](float deltaTime) {
+    auto draw = [&compiled, &renderer, &camera, &lightPos, &cube1, &cube2, &r, &g, &b, &testShader, &lightingShader, &watcher](float deltaTime) {
+        watcher.checkShaders();
+
         ImGui::Begin("testmenu");
 
         ImGui::SliderFloat("red", &r, 0.0f, 1.0f);
