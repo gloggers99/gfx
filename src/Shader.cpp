@@ -8,15 +8,16 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <stdexcept>
 #include <string>
 
 namespace GFX {
 
 GLint Shader::getUniformLocation(const std::string &uniformName) {
     GLint uniformLocation = glGetUniformLocation(this->shaderProgram, uniformName.c_str());
-    if (uniformLocation == -1)
-        throw std::runtime_error("uniform named \"" + uniformName + "\" doesn't exist.");
+    if (uniformLocation == -1) {
+        return 0;
+        // throw std::runtime_error("uniform named \"" + uniformName + "\" doesn't exist.");
+    }
     return uniformLocation;
 }
 

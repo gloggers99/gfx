@@ -2,6 +2,8 @@
 ## Getting Started
 ### What is GFX
 GFX is a simple C++ graphics library that uses GLFW to create a basic multiplatform window, then provide easy to use rendering tools using the GFX:: directive.
+![](assets/shaderwatchertest.gif)
+<sub><sup>Automatic shader hot reloading showcase</sup></sub>
 ### Features
 - [X] Easy to use VAO, VBO, and EBO classes
 - [ ] Texture System (needs to be redone)
@@ -104,65 +106,4 @@ int main() {
 }
 ```
 ## Shaders
-### !!! WARNING !!!
-this section needs to be rewritten as the current implementation of shaders is now easier and more efficient and the following information is outdated.
-### What are shaders
-Shaders are a very complex topic, the basic rundown is vertex shaders describe how to draw each vertice inputted into opengl, and the fragment shader describes how to draw each fragment/pixel of your shape, and fills it in.
-### What are the default shaders
-the default vertex shader simply maps the input vertices onto the gl_Position global, while the default fragment shader simply applys a basic red FragColor to the input.  
-#### Default vertex shader
-```glsl
-#version 330
-
-layout (location = 0) in vec3 aPos;
-
-void main() {
-    gl_Position = vec4(aPos, 1.0);
-}
-```
-#### Default fragment shader
-```glsl
-#version 330
-
-out vec4 FragColor;
-
-void main() {
-    FragColor = vec4(1.0, 0.0, 0.0, 1.0);
-}
-```
-### How can I create a custom shader
-```c++
-#include "path/to/GFX.hpp"
-
-int main() {
-    GFX::Shader myShader = GFX::Shader(
-        /* 
-            The first argument of the Shader constructor
-            takes the vertex shader source. Theres many
-            ways to input this, in this example I'll
-            use a raw string.
-        */
-        R"(
-            #version 330
-
-            layout (location = 0) in vec3 aPos;
-
-            void main() {
-                gl_Position = vec4(aPos, 1.0);
-            }
-        )",
-        /*
-            The second argument is the fragment shader.
-        */
-        R"(
-            #version 330
-
-            out vec4 FragColor;
-
-            void main() {
-                FragColor = vec4(1.0, 0.0, 0.0, 1.0);
-            }
-        )"
-    );
-}
-```
+!!! the shader system has been reworked and this section is going to be rewritten.
