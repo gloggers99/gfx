@@ -1,5 +1,7 @@
 #include "../src/GFX.hpp"
 
+#include <glm/ext/matrix_transform.hpp>
+
 int main() {
     GFX::Renderer renderer = GFX::Renderer();
     GFX::Shader shader = GFX::Shader("lightingShader");
@@ -19,7 +21,7 @@ int main() {
         shader.updateUniform("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
         shader.updateUniform("objectColor", glm::vec3(1.0f, 0.5f, 0.31f));
 
-        shader.updateUniform("transform", glm::mat4(1.0f));
+        shader.updateUniform("transform", glm::scale(glm::mat4(1.0f), glm::vec3(0.1f, 0.1f, 0.1f)));
 
         model.draw(&shader);
 
