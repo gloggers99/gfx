@@ -38,6 +38,14 @@ void Renderer::getCursorPos(double *xpos, double *ypos) {
     glfwGetCursorPos(this->window, xpos, ypos);
 }
 
+void Renderer::enableWireframe() {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+}
+
+void Renderer::disableWireframe() {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
 void Renderer::showCursor() {
     glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 }

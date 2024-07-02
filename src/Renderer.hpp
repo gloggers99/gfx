@@ -27,6 +27,9 @@ public:
     void getSize(int *width, int *height);
     void getCursorPos(double *xpos, double *ypos);
 
+    void enableWireframe();
+    void disableWireframe();
+
     void showCursor();
     void hideCursor();
 
