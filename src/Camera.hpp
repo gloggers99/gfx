@@ -27,7 +27,7 @@ private:
     // TODO: this needs to be changed to the window size
     float lastX = 640.0f / 2.0;
     float lastY = 480.0f / 2.0;
-    float fov = 90.0f;
+    float fov;
 
 public:
     glm::vec3 getCameraPos();
@@ -40,7 +40,7 @@ public:
     void move(Direction direction, float speed = 2.5f);
     void handleMouse(Renderer *renderer, float sensitivity = 0.5f);
 
-    Camera();
+    Camera(float fov = 90.0f);
     ~Camera();
 };
 
