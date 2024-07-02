@@ -70,6 +70,7 @@ void Renderer::loop(std::function<void(float)> loopFunction) {
         this->currentFrame = glfwGetTime();
         this->deltaTime = this->currentFrame - this->lastFrame;
         this->lastFrame = this->currentFrame;
+        this->clear();
         loopFunction(this->deltaTime);
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
