@@ -1,5 +1,6 @@
 # GFX
 ## Getting Started
+### README NEEDS TO BE REDONE, EVERYTHING HAS BEEN REWORKED
 ### What is GFX
 GFX is a simple C++ graphics library that uses GLFW to create a basic multiplatform window, then provide easy to use rendering tools using the GFX:: directive.
 ![](assets/shaderwatchertest.gif)
@@ -105,5 +106,33 @@ int main() {
     return 0;
 }
 ```
+### A more structured example
+This is more useful for larger projects when you have many different variables to send into the render function.
+```c++
+#include "../src/GFX.hpp"
+
+struct app {
+    GFX::Renderer *renderer;
+} typedef App;
+
+int main() {
+    GFX::Renderer renderer = GFX::Renderer();
+
+    App app = {
+        &renderer
+    };
+
+    auto draw = [&app](float deltaTime) {
+        app.renderer->clear();
+        app.renderer->clearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        app.renderer->swapBuffers();
+    };
+
+    renderer.loop(draw);
+
+    return 0;
+}
+```
+In the end how you structure your code is up to you, but the above example is a good starting point for larger projects. You could even skip the lambda function and straight up pass a normal function into the renderer.
 ## Shaders
 !!! the shader system has been reworked and this section is going to be rewritten.

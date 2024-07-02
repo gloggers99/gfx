@@ -23,11 +23,11 @@ add_executable(gfx
     src/Texture.cpp
     src/ShaderWatcher.cpp
 
-    src/obj/Cube.cpp
+    src/VertexStack.cpp
 
     src/vo/VAO.cpp
     src/vo/VBO.cpp
     src/vo/EBO.cpp
 
     test/main.cpp)
-target_link_libraries(gfx glfw)
+target_link_libraries(gfx glfw assimp)

@@ -1,3 +1,5 @@
+/*
+
 #include "Texture.hpp"
 #include "Renderer.hpp"
 
@@ -43,4 +45,5 @@ Texture::~Texture() {
     glDeleteTextures(1, &this->texture);
 }
 
-}; // namespace GFX
+};// namespace GFX
+*/

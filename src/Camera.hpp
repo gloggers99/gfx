@@ -38,7 +38,7 @@ public:
     glm::mat4 createCameraMatrix(Renderer *renderer);
 
     void move(Direction direction, float speed = 2.5f);
-    void handleMouse(Renderer *renderer, float sensitivity = 0.01f);
+    void handleMouse(Renderer *renderer, float sensitivity = 0.5f);
 
     Camera();
     ~Camera();

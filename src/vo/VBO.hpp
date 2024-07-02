@@ -12,7 +12,7 @@ public:
     GLuint getVBO();
     void bind();
     void unbind();
-    void setBufferData(float *data, size_t size);
+    void setBufferData(const void *data, size_t size);
     void setAttribPointer(GLint index, GLint size, int stride, int offset);
 
     VBO();
