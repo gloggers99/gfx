@@ -5,17 +5,13 @@
 #include "vo/VAO.hpp"
 #include "vo/VBO.hpp"
 
+#include "Vertex.hpp"
+
 #include <glm/glm.hpp>
 
 #include <vector>
 
 namespace GFX {
-
-// TODO: take note of this somewhere because this
-// universally will apply to all vertex shaders.
-struct Vertex {
-    glm::vec3 position;
-};
 
 class VertexStack {
 private:

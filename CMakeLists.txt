@@ -22,8 +22,9 @@ add_executable(gfx
     src/Camera.cpp
     src/Texture.cpp
     src/ShaderWatcher.cpp
-
+    src/Model.cpp
     src/VertexStack.cpp
+    src/IndicedVertexStack.cpp
 
     src/vo/VAO.cpp
     src/vo/VBO.cpp

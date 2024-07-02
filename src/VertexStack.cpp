@@ -29,11 +29,12 @@ void VertexStack::compile() {
     this->compiled = true;
 }
 
-VertexStack::VertexStack() {
+VertexStack::VertexStack() : compiled(false), vao(), vbo() {
     this->vertices = std::vector<Vertex>();
 }
 
-VertexStack::VertexStack(std::vector<Vertex> vertices) : vertices(vertices), compiled(false) {
+VertexStack::VertexStack(std::vector<Vertex> vertices) : vertices(vertices), 
+    compiled(false), vao(), vbo() {
 }
 
 VertexStack::~VertexStack() {

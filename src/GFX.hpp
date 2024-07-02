@@ -10,3 +10,4 @@
 #include "Texture.hpp"
 #include "ShaderWatcher.hpp"
 #include "VertexStack.hpp"
+#include "Model.hpp"
