@@ -11,3 +11,6 @@
 #include "ShaderWatcher.hpp"
 #include "VertexStack.hpp"
 #include "Model.hpp"
+
+#include <glm/glm.hpp>
+#include <glm/ext/matrix_transform.hpp>

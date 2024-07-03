@@ -37,17 +37,17 @@ target_include_directories(gfx PUBLIC include)
 target_compile_options(gfx PRIVATE -Wall -Wextra)
 
 install(TARGETS gfx
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+    LIBRARY DESTINATION /usr/lib
+    PUBLIC_HEADER DESTINATION /usr/include)
 
-# slap glad's header into /usr/local/include/glad
+# slap glad's header into /usr/include/glad
 file(GLOB GLAD_HEADERS include/glad/*.h)
-install(FILES ${GLAD_HEADERS} DESTINATION /usr/local/include/glad)
+install(FILES ${GLAD_HEADERS} DESTINATION /usr/include/glad)
 
 file(GLOB MAIN_HEADERS src/*.hpp)
-install(FILES ${MAIN_HEADERS} DESTINATION /usr/local/include/gfx)
+install(FILES ${MAIN_HEADERS} DESTINATION /usr/include/gfx)
 file(GLOB VO_HEADERS src/vo/*.hpp)
-install(FILES ${VO_HEADERS} DESTINATION /usr/local/include/gfx/vo)
+install(FILES ${VO_HEADERS} DESTINATION /usr/include/gfx/vo)
 
 configure_file(gfx.pc.in gfx.pc @ONLY)
 install(FILES ${CMAKE_BINARY_DIR}/gfx.pc DESTINATION /usr/local/lib/pkgconfig)

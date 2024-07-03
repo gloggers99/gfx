@@ -84,7 +84,6 @@ g++ ./main.cpp -lgfx -o main
 ```
 You should get something like this!
 ![](assets/helloworld.png)
-(note that the library's shared object file is put in /usr/local/lib which is NOT default on most systems, this is subject to change and install into a more conventional directory, but for now you can use LD_LIBRARY_PATH to point to the correct directory when you run your test. for example: `LD_LIBRARY_PATH=/usr/local/lib ./main`)
 ### Shader Watcher Example
 Shader Watcher is a feature that automatically reloads shaders when the source code for them is changed. This is incredibly useful for debugging shaders as you can see the changes in real-time.
 ```cpp

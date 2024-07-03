@@ -3,3 +3,5 @@
 .cache
 imgui.ini
 compile_commands.json
+
+gfx_test/CMakeFiles
