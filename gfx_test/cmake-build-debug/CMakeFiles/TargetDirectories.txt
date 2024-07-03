@@ -1,0 +1,3 @@
+/home/lucas/src/gfx/gfx_test/cmake-build-debug/CMakeFiles/gfx_test.dir
+/home/lucas/src/gfx/gfx_test/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/lucas/src/gfx/gfx_test/cmake-build-debug/CMakeFiles/rebuild_cache.dir
