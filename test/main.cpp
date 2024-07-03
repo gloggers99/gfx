@@ -1,5 +1,4 @@
-#include "../src/GFX.hpp"
-
+#include <gfx/GFX.hpp>
 #include <glm/ext/matrix_transform.hpp>
 
 int main() {
