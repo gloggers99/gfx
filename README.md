@@ -14,6 +14,7 @@
 - [Getting Started](#getting-started)
   - [What is GFX](#what-is-gfx)
   - [Features](#features)
+  - [Installation](#installation)
   - [Hello World](#hello-world)
   - [Shader Watcher Example](#shader-watcher-example)
   - [OBJ Loader](#obj-loader)
@@ -31,6 +32,24 @@ GFX is a simple C++ graphics library that uses GLFW to create a basic multiplatf
 - [X] Multithreaded automatic hot reloadable shader compilation
 - [X] Compatibility with ALL custom opengl drawing code (theoretically you could use GFX to load OpenGL then use OpenGL code to do the rest)
 - [X] Full ImGui implementation
+- [ ] Windows support (coming soon)
+- [X] MacOS support
+- [X] Linux support
+### Installation
+GFX will eventually be added to package repositories when I believe it is stable and actually usable. For now the following commands will work.  
+You will need to have the following dependencies installed:
+- cmake (3.5 or above)
+- gcc (g++ in specific)
+- make
+- git
+```bash
+git clone https://github.com/gloggers99/gfx.git --recurse-submodules
+cd ./gfx
+mkdir ./cmake-build-debug
+cd ./cmake-build-debug
+cmake ..
+sudo make install
+```
 ### Hello World
 ```cpp
 #include <GFX.h>
@@ -59,7 +78,13 @@ int main() {
     return 0;
 }
 ```
+Now compile the program with the following commands:
+```bash
+g++ ./main.cpp -lgfx -o main
+```
+You should get something like this!
 ![](assets/helloworld.png)
+(note that the library's shared object file is put in /usr/local/lib which is NOT default on most systems, this is subject to change and install into a more conventional directory, but for now you can use LD_LIBRARY_PATH to point to the correct directory when you run your test. for example: `LD_LIBRARY_PATH=/usr/local/lib ./main`)
 ### Shader Watcher Example
 Shader Watcher is a feature that automatically reloads shaders when the source code for them is changed. This is incredibly useful for debugging shaders as you can see the changes in real-time.
 ```cpp
