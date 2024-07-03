@@ -32,3 +32,4 @@ add_executable(gfx
 
     test/main.cpp)
 target_link_libraries(gfx glfw assimp)
+target_compile_options(gfx PRIVATE -Wall -Wextra)

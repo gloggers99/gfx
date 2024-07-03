@@ -1,6 +1,10 @@
 #include "Shader.hpp"
 
-#include <vector>
+#include <map>
+#include <mutex>
+#include <thread>
+
+#include <sys/inotify.h>
 
 namespace GFX {
 
@@ -11,9 +15,20 @@ namespace GFX {
     lower end machines. I will have to look into a better solution for this.
  */
 
+/*
+ * UPDATE: I am working on a multithreaded approach using inotify again..
+ */
+
+/*
+ * Multithreading is now working but it is limited to linux only for now.
+ */
+
 class ShaderWatcher {
 private:
-    std::vector<Shader*> shaders;
+    std::thread shaderWatcherThread;
+    
+    std::map<Shader *, bool> shaders;
+    std::mutex shadersLock;
 
 public:
     void attach(Shader &shader);

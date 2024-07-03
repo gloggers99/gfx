@@ -4,7 +4,7 @@
 
 int main() {
     GFX::Renderer renderer = GFX::Renderer();
-    GFX::Shader shader = GFX::Shader("lightingShader");
+    GFX::Shader shader = GFX::Shader("defaultShader");
     GFX::ShaderWatcher shaderWatcher = GFX::ShaderWatcher();
     shaderWatcher.attach(shader);
     GFX::Camera camera = GFX::Camera();
@@ -16,11 +16,12 @@ int main() {
         camera.handleMouse(&renderer);
         shader.updateUniform("camera", camera.createCameraMatrix(&renderer));
 
+        /*
         shader.updateUniform("lightPos", glm::vec3(1.2f, 1.0f, 2.0f));
         shader.updateUniform("viewPos", camera.getCameraPos());
         shader.updateUniform("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
         shader.updateUniform("objectColor", glm::vec3(1.0f, 0.5f, 0.31f));
-
+        */
         shader.updateUniform("transform", glm::scale(glm::mat4(1.0f), glm::vec3(0.1f, 0.1f, 0.1f)));
 
         model.draw(&shader);

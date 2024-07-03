@@ -26,7 +26,7 @@ GFX is a simple C++ graphics library that uses GLFW to create a basic multiplatf
 - [X] Easy to use VAO, VBO, and EBO classes
 - [X] .OBJ file importer made from scratch built for efficiency
 - [ ] Texture System (needs to be redone)
-- [X] Automatic hot reloadable shader compilation
+- [X] Multithreaded automatic hot reloadable shader compilation
 - [X] Compatibility with ALL custom opengl drawing code (theoretically you could use GFX to load OpenGL then use OpenGL code to do the rest)
 - [X] Full ImGui implementation
 ### Hello World
