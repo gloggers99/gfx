@@ -1,1 +1,0 @@
-/usr/bin/c++ -rdynamic CMakeFiles/gfx_test.dir/main.cpp.o -o gfx_test  -lgfx

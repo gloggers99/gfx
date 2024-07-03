@@ -4,4 +4,4 @@
 imgui.ini
 compile_commands.json
 
-gfx_test/CMakeFiles
+gfx_test/cmake-build-debug/
