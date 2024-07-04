@@ -8,12 +8,10 @@ int main() {
     GFX::Shader shader = GFX::Shader("defaultShader");
     
     GFX::Camera camera = GFX::Camera();
-    GFX::Model libertyStatue = GFX::Model("obj/LibertyStatue/LibertStatue.obj");
-    GFX::Model ogre = GFX::Model("obj/test.obj");
+    GFX::Model libertyStatue = GFX::Model("obj/test2.obj");
+    //GFX::Model ogre = GFX::Model("obj/test.obj");
 
     glm::mat4 transform = glm::mat4(1.0f);
-    transform = glm::scale(transform, glm::vec3(0.1f, 0.1f, 0.1f));
-    transform = glm::translate(transform, glm::vec3(0.0f, -5.0f, -5.0f));
 
     shader.updateUniform("transform", transform);
 
@@ -24,7 +22,7 @@ int main() {
         renderer.clearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
         libertyStatue.draw(&shader);
-        ogre.draw(&shader);
+        //ogre.draw(&shader);
 
         float camSpeed = 2.5f * deltaTime;
         if (renderer.getKey(GLFW_KEY_W))

@@ -1,5 +1,6 @@
 #include "Model.hpp"
 #include "IndicedVertexStack.hpp"
+#include <algorithm>
 #include <cstdlib>
 #include <exception>
 #include <filesystem>
@@ -45,8 +46,7 @@ void Model::loadModel() {
     // we must first load them into here so we can assemble them together in the end.
     std::vector<glm::vec3> tmpVertices;
 
-    // indices are added directly because they are not inputted into the vertex shader
-    // like these are.
+    std::vector<unsigned int> tmpIndices;
     std::vector<unsigned int> tmpTexCoords;
     std::vector<unsigned int> tmpNormals;
 
@@ -59,10 +59,12 @@ void Model::loadModel() {
     while (!file.eof()) {
         std::getline(file, line);
 
+        // trim
+        while ( !line.empty() && isspace(line.back()) ) line.pop_back();
         ss.clear();
         ss.str(line);
 
-        if (line.substr(0, 1) == "v") {
+        if (line.substr(0, 2) == "v ") {
             char token;
             float x, y, z;
 
@@ -70,31 +72,42 @@ void Model::loadModel() {
             tmpVertices.push_back({x, y, z});
         } else if (line.substr(0, 1) == "f") {
             if (line.find("/") != std::string::npos) {
-                // the format of the face is "f vertex/texCoord/normal * 4" in this case.
+                // the format of the face is "f vertex/texCoord/normal * 4" OR * 3 in this case.
                 // this is just ridiculous
+                
+                // count space:
+                int count = std::count(line.begin(), line.end(), ' ');
+                if (count == 4)
+                    throw std::runtime_error("Model face is a quad. Please load a triangulated model.");
+                // TODO: Convert quad OBJ files to triangulated OBJ files.
+
+                // it seems in this format of the OBJ file the faces are zero-indexed.
                 char token;
-                std::string x, y, z, a;
-                ss >> token >> x >> y >> z >> a;
+                std::string x, y, z;
+                ss >> token >> x >> y >> z;
 
                 glm::vec3 xFace = parseTripleFace(x);
-                this->vertexStack.addIndex(xFace.x - 1);
-                tmpTexCoords.push_back(xFace.y - 1);
-                tmpNormals.push_back(xFace.z - 1);
+                std::cout << "added index: " << xFace.x << "\n";
+                tmpIndices.push_back(xFace.x);
+                //tmpTexCoords.push_back(xFace.y);
+                //tmpNormals.push_back(xFace.z);
 
                 glm::vec3 yFace = parseTripleFace(y);
-                this->vertexStack.addIndex(xFace.x - 1);
-                tmpTexCoords.push_back(yFace.y - 1);
-                tmpNormals.push_back(yFace.z - 1);
+                std::cout << "added index: " << yFace.x << "\n";
+                tmpIndices.push_back(yFace.x);
+                //tmpTexCoords.push_back(yFace.y);
+                //tmpNormals.push_back(yFace.z);
 
                 glm::vec3 zFace = parseTripleFace(z);
-                this->vertexStack.addIndex(xFace.x - 1);
-                tmpTexCoords.push_back(zFace.y - 1);
-                tmpNormals.push_back(zFace.z - 1);
+                std::cout << "added index: " << zFace.x << "\n";
+                tmpIndices.push_back(zFace.x);
+                //tmpTexCoords.push_back(zFace.y);
+                //tmpNormals.push_back(zFace.z);
 
-                glm::vec3 aFace = parseTripleFace(a);
-                this->vertexStack.addIndex(xFace.x - 1);
-                tmpTexCoords.push_back(aFace.y - 1);
-                tmpNormals.push_back(aFace.z - 1);
+                for (size_t i = 0; i < tmpIndices.size(); i++) {
+                    std::cout << "index: " << tmpIndices[i] << "\n";
+                    this->vertexStack.addIndex(tmpIndices[i]);
+                }
             } else {
                 // the format of the face is "f x y z" in this case.
                 char token;
@@ -107,37 +120,8 @@ void Model::loadModel() {
             }
 
         } else {
-
+            std::cout << "Ignoring line: " << line << "\n";
         }
-
-
-
-        /*
-        std::string token, x, y, z;
-        ss >> token >> x >> y >> z;
-        if (token == "v") {
-            this->vertexStack.addVertex({{std::stof(x), std::stof(y), std::stof(z)}});
-        } if (token == "f") {
-            if (x.find("/") != std::string::npos) {
-                //this->addTripleIndice(parseFDiv(x));
-                //this->addTripleIndice(parseFDiv(y));
-                //this->addTripleIndice(parseFDiv(z));
-            } else {
-                this->vertexStack.addIndex(std::stoi(x) - 1);
-                this->vertexStack.addIndex(std::stoi(y) - 1);
-                this->vertexStack.addIndex(std::stoi(z) - 1);
-            }
-        }*/
-            
-        /*else if (line.substr(0, 2) == "vt") {
-            // texture coordinates
-        } else if (line.substr(0, 2) == "vn") {
-            // normals
-        } else if (line.substr(0, 2) == "f ") {
-            // faces
-        } else {
-            // ignore
-        }*/
     }
 
     file.close();
