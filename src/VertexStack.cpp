@@ -1,5 +1,7 @@
 #include "VertexStack.hpp"
 
+#include <iostream>
+
 namespace GFX {
 
 void VertexStack::add(Vertex vertex) {
@@ -40,12 +42,12 @@ VertexStack::VertexStack(std::vector<Vertex> vertices) : vertices(vertices),
 VertexStack::~VertexStack() {
 }
 
-VertexStack operator+(VertexStack &lhs, VertexStack &rhs) {
-    VertexStack newStack = VertexStack(lhs.vertices);
-    for (Vertex vertex : rhs.vertices) {
-        newStack.add(vertex);
-    }
-    return newStack;
+std::ostream &operator<<(std::ostream& os, const VertexStack& stack) {
+    os << "VertexStack {\n";
+    os << "    vertices: " << stack.vertices.size() << " vertices\n";
+    os << "    compiled: " << stack.compiled << "\n";
+    os << "}";
+    return os;
 }
 
 }; // namespace GFX

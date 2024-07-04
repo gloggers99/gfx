@@ -1,5 +1,7 @@
 #include "IndicedVertexStack.hpp"
 
+#include <iostream>
+
 namespace GFX {
 
 void IndicedVertexStack::addVertex(Vertex vertex) {
@@ -42,6 +44,15 @@ IndicedVertexStack::IndicedVertexStack(std::vector<Vertex> vertices, std::vector
 }
 
 IndicedVertexStack::~IndicedVertexStack() {
+}
+
+std::ostream &operator<<(std::ostream& os, const IndicedVertexStack& stack) {
+    os << "IndicedVertexStack {\n";
+    os << "    vertices: " << stack.vertices.size() << " vertices\n";
+    os << "    indices: " << stack.indices.size() << " indices\n";
+    os << "    compiled: " << stack.compiled << "\n";
+    os << "}";
+    return os;
 }
 
 };

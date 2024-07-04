@@ -42,6 +42,8 @@ You will need to have the following dependencies installed:
 - gcc (g++ in specific)
 - make
 - git
+- GLM library installed
+- GLFW library installed
 ```bash
 git clone https://github.com/gloggers99/gfx.git --recurse-submodules
 cd ./gfx

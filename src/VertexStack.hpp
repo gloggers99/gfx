@@ -31,7 +31,7 @@ public:
     VertexStack(std::vector<Vertex> vertices);
     ~VertexStack();
 
-    friend VertexStack operator+(VertexStack &lhs, VertexStack &rhs);
+    friend std::ostream &operator<<(std::ostream& os, const VertexStack& stack);
 };
 
 };

@@ -33,6 +33,8 @@ public:
     IndicedVertexStack();
     IndicedVertexStack(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
     ~IndicedVertexStack();
+
+    friend std::ostream &operator<<(std::ostream& os, const IndicedVertexStack& stack);
 };
 
 }; // namespace GFX
