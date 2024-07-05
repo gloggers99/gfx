@@ -104,10 +104,6 @@ void Model::loadModel() {
                 //tmpTexCoords.push_back(zFace.y);
                 //tmpNormals.push_back(zFace.z);
 
-                for (size_t i = 0; i < tmpIndices.size(); i++) {
-                    std::cout << "index: " << tmpIndices[i] << "\n";
-                    this->vertexStack.addIndex(tmpIndices[i]);
-                }
             } else {
                 // the format of the face is "f x y z" in this case.
                 char token;
@@ -129,6 +125,10 @@ void Model::loadModel() {
     for (size_t i = 0; i < tmpVertices.size(); i++) {
         this->vertexStack.addVertex({tmpVertices[i]});
     }
+    for (size_t i = 0; i < tmpIndices.size(); i++) {
+        this->vertexStack.addIndex(tmpIndices[i]);
+    }
+
 }
 
 void Model::draw(Shader *shader) {
@@ -148,4 +148,4 @@ Model::Model(const std::string &path) : path(path), vertexStack(IndicedVertexSta
 Model::~Model() {
 }
 
-};
+}; // namespace GFX
