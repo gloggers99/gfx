@@ -6,7 +6,7 @@
 namespace GFX {
 
 void VertexStack::add(Vertex vertex) {
-    this->vertices.push_back(vertex);
+    this->vertices.emplace_back(vertex);
 }
 
 void VertexStack::draw(Shader *shader) {

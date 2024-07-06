@@ -6,11 +6,11 @@
 namespace GFX {
 
 void IndicedVertexStack::addVertex(Vertex vertex) {
-    this->vertices.push_back(vertex);
+    this->vertices.emplace_back(vertex);
 }
 
 void IndicedVertexStack::addIndex(unsigned int index) {
-    this->indices.push_back(index);
+    this->indices.emplace_back(index);
 }
 
 void IndicedVertexStack::draw(Shader *shader) {

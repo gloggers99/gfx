@@ -106,52 +106,65 @@ void Model::loadModel() {
 
     file.close();
 
-    // utilize hashing for faster comparison of Vertex's
-    struct VertexKey {
-        unsigned int vertexIndex;
-        unsigned int texCoordIndex;
-        unsigned int normalIndex;
+    if (!tmpNormalIndices.empty() || !tmpTexCoordIndices.empty()) {
+        // utilize hashing for faster comparison of Vertex's
+        struct VertexKey {
+            unsigned int vertexIndex;
+            unsigned int texCoordIndex;
+            unsigned int normalIndex;
 
-        bool operator==(const VertexKey &other) const {
-            return vertexIndex == other.vertexIndex &&
-                   texCoordIndex == other.texCoordIndex &&
-                   normalIndex == other.normalIndex;
+            bool operator==(const VertexKey &other) const {
+                return vertexIndex == other.vertexIndex &&
+                       texCoordIndex == other.texCoordIndex &&
+                       normalIndex == other.normalIndex;
+            }
+        };
+
+        struct VertexKeyHash {
+            std::size_t operator()(const VertexKey &key) const {
+                return ((std::hash<unsigned int>()(key.vertexIndex) ^
+                         (std::hash<unsigned int>()(key.texCoordIndex) << 1)) >> 1) ^
+                       (std::hash<unsigned int>()(key.normalIndex) << 1);
+            }
+        };
+
+        std::unordered_map<VertexKey, unsigned int, VertexKeyHash> uniqueVertices;
+        std::vector<Vertex> vertices;
+        std::vector<unsigned int> indices;
+
+        for (size_t i = 0; i < tmpIndices.size(); ++i) {
+            VertexKey key{tmpIndices[i], tmpTexCoordIndices[i], tmpNormalIndices[i]};
+
+            if (uniqueVertices.find(key) == uniqueVertices.end()) {
+                Vertex vertex = {};
+                vertex.position = tmpVertices[key.vertexIndex];
+                vertex.texCoord = tmpTexCoords[key.texCoordIndex];
+                vertex.normal = tmpNormals[key.normalIndex];
+
+                uniqueVertices[key] = vertices.size();
+                vertices.push_back(vertex);
+            }
+
+            indices.push_back(uniqueVertices[key]);
         }
-    };
 
-    struct VertexKeyHash {
-        std::size_t operator()(const VertexKey &key) const {
-            return ((std::hash<unsigned int>()(key.vertexIndex) ^
-                     (std::hash<unsigned int>()(key.texCoordIndex) << 1)) >> 1) ^
-                   (std::hash<unsigned int>()(key.normalIndex) << 1);
+        for (const Vertex &v : vertices) {
+            this->vertexStack.addVertex(v);
         }
-    };
-
-    std::unordered_map<VertexKey, unsigned int, VertexKeyHash> uniqueVertices;
-    std::vector<Vertex> vertices;
-    std::vector<unsigned int> indices;
-
-    for (size_t i = 0; i < tmpIndices.size(); ++i) {
-        VertexKey key{tmpIndices[i], tmpTexCoordIndices[i], tmpNormalIndices[i]};
-
-        if (uniqueVertices.find(key) == uniqueVertices.end()) {
-            Vertex vertex = {};
-            vertex.position = tmpVertices[key.vertexIndex];
-            vertex.texCoord = tmpTexCoords[key.texCoordIndex];
-            vertex.normal = tmpNormals[key.normalIndex];
-
-            uniqueVertices[key] = vertices.size();
-            vertices.push_back(vertex);
+        for (unsigned int index : indices) {
+            this->vertexStack.addIndex(index);
         }
-
-        indices.push_back(uniqueVertices[key]);
-    }
-
-    for (const Vertex &v : vertices) {
-        this->vertexStack.addVertex(v);
-    }
-    for (unsigned int index : indices) {
-        this->vertexStack.addIndex(index);
+    } else {
+        for (glm::vec3 v : tmpVertices) {
+            this->vertexStack.addVertex(Vertex {
+                    {v},
+                    {0, 0},
+                    {0, 0, 0}
+            });
+        }
+        for (unsigned int indice : tmpIndices) {
+            this->vertexStack.addIndex(indice);
+        }
     }
 
     auto endTime = std::chrono::high_resolution_clock::now();
@@ -163,7 +176,7 @@ void Model::draw(Shader *shader) {
     this->vertexStack.draw(shader);
 }
 
-Model::Model(std::string path) : path(std::move(path)), vertexStack(IndicedVertexStack()) {
+Model::Model(std::string path) : modelName("missing name"), path(std::move(path)), vertexStack(IndicedVertexStack()) {
     if (!std::filesystem::exists(this->path))
         throw std::runtime_error("Model does not exist.");
 
