@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Shader.hpp"
-#include "IShaderWatcher.h"
+#include "IShaderWatcher.hpp"
 
 #include <map>
 #include <mutex>
