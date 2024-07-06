@@ -27,7 +27,7 @@ GFX is a simple C++ graphics library that uses GLFW to create a basic multiplatf
 <sub><sup>Automatic shader hot reloading showcase</sup></sub>
 ### Features
 - [X] Easy to use VAO, VBO, and EBO classes
-- [X] .OBJ file importer made from scratch built for efficiency
+- [X] .OBJ file importer made from scratch built for efficiency (WIP)
 - [ ] Texture System (needs to be redone)
 - [X] Multithreaded automatic hot reloadable shader compilation
 - [X] Compatibility with ALL custom opengl drawing code (theoretically you could use GFX to load OpenGL then use OpenGL code to do the rest)
@@ -36,15 +36,15 @@ GFX is a simple C++ graphics library that uses GLFW to create a basic multiplatf
 - [X] MacOS support
 - [X] Linux support
 ### Installation
+#### Linux/Mac
 GFX will eventually be added to package repositories when I believe it is stable and actually usable. For now the following commands will work.  
 You will need to have the following dependencies installed:
 - cmake (3.5 or above)
 - gcc (g++ in specific)
 - make
 - git
-- GLM library installed
 - GLFW library installed
-```bash
+```shell
 git clone https://github.com/gloggers99/gfx.git --recurse-submodules
 cd ./gfx
 mkdir ./cmake-build-debug
@@ -52,6 +52,8 @@ cd ./cmake-build-debug
 cmake ..
 sudo make install
 ```
+#### Windows
+Binary zips with header files will be distributed when GFX is in a more stable point, however for now you will need to build it yourself, windows is pretty annoying when it comes to building software, the simplest way would be to install CLion and load up the GFX repository and click build
 ### Hello World
 ```cpp
 #include <GFX.h>
@@ -129,6 +131,7 @@ int main() {
 }
 ```
 ### OBJ Loader
+The OBJ loader is currently WIP, however it can still load in simple models defined with triangles, NO QUADS, quad support will be added in the future. Currently all that gets loaded are vertices, textures and normals will be added in the future.
 ```cpp
 #include <GFX.h>
 

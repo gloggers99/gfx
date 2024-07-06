@@ -1,6 +1,7 @@
 #include "VertexStack.hpp"
 
 #include <iostream>
+#include <utility>
 
 namespace GFX {
 
@@ -14,7 +15,7 @@ void VertexStack::draw(Shader *shader) {
 
     shader->use();
     this->vao.bind();
-    glDrawArrays(GL_TRIANGLES, 0, this->vertices.size());
+    glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(this->vertices.size()));
     this->vao.unbind();
 }
 
@@ -35,12 +36,11 @@ VertexStack::VertexStack() : compiled(false), vao(), vbo() {
     this->vertices = std::vector<Vertex>();
 }
 
-VertexStack::VertexStack(std::vector<Vertex> vertices) : vertices(vertices), 
+VertexStack::VertexStack(std::vector<Vertex> vertices) : vertices(std::move(vertices)),
     compiled(false), vao(), vbo() {
 }
 
-VertexStack::~VertexStack() {
-}
+VertexStack::~VertexStack() = default;
 
 std::ostream &operator<<(std::ostream& os, const VertexStack& stack) {
     os << "VertexStack {\n";

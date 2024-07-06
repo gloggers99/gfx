@@ -73,7 +73,7 @@ void Renderer::swapBuffers() {
     glfwSwapBuffers(this->window);
 }
 
-void Renderer::loop(std::function<void(float)> loopFunction) {
+void Renderer::loop(const std::function<void(float)>& loopFunction) {
     while (!this->shouldClose()) {
 #if not defined(__MINGW32__)
         ImGui_ImplOpenGL3_NewFrame();

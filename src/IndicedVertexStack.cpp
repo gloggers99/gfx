@@ -1,6 +1,7 @@
 #include "IndicedVertexStack.hpp"
 
 #include <iostream>
+#include <utility>
 
 namespace GFX {
 
@@ -18,7 +19,7 @@ void IndicedVertexStack::draw(Shader *shader) {
 
     shader->use();
     this->vao.bind();
-    glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(this->indices.size()), GL_UNSIGNED_INT, nullptr);
     this->vao.unbind();
 }
 
@@ -40,11 +41,10 @@ IndicedVertexStack::IndicedVertexStack() : compiled(false), vao(VAO()), vbo(VBO(
 }
 
 IndicedVertexStack::IndicedVertexStack(std::vector<Vertex> vertices, std::vector<unsigned int> indices) : 
-    vertices(vertices), indices(indices), compiled(false), vao(VAO()), vbo(VBO()), ebo(EBO()) {
+    vertices(std::move(vertices)), indices(std::move(indices)), compiled(false), vao(VAO()), vbo(VBO()), ebo(EBO()) {
 }
 
-IndicedVertexStack::~IndicedVertexStack() {
-}
+IndicedVertexStack::~IndicedVertexStack() = default;
 
 std::ostream &operator<<(std::ostream& os, const IndicedVertexStack& stack) {
     os << "IndicedVertexStack {\n";
