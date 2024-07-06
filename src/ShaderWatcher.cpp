@@ -1,7 +1,6 @@
 #include "ShaderWatcher.hpp"
 
 #ifndef _WIN32
-#define
 
 #include <iostream>
 #include <sstream>

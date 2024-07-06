@@ -1,7 +1,6 @@
 #include "Shader.hpp"
 
 #ifndef _WIN32
-#define
 
 #include <map>
 #include <mutex>
