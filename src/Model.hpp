@@ -8,6 +8,7 @@ namespace GFX {
 
 class Model {
 private:
+    std::string modelName;
     std::string path;
 
     IndicedVertexStack vertexStack;

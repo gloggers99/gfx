@@ -5,7 +5,7 @@ int main() {
     GFX::Renderer renderer = GFX::Renderer();
     GFX::Camera camera = GFX::Camera(&renderer);
 
-    GFX::Model model = GFX::Model("./obj/test2.obj");
+    GFX::Model model = GFX::Model("./obj/test.obj");
     GFX::Shader shader = GFX::Shader("lightingShader");
     GFX::ShaderWatcher shaderWatcher = GFX::ShaderWatcher();
     shaderWatcher.attach(&shader);
