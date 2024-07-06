@@ -1,6 +1,5 @@
 #include <iostream>
 #include "src/GFX.hpp"
-#include "glm/fwd.hpp"
 
 int main() {
     GFX::Renderer renderer = GFX::Renderer();
@@ -8,11 +7,15 @@ int main() {
 
     GFX::Model model = GFX::Model("./obj/test2.obj");
     GFX::Shader shader = GFX::Shader("defaultShader");
+    GFX::ShaderWatcher shaderWatcher = GFX::ShaderWatcher();
+    shaderWatcher.attach(&shader);
 
     shader.updateUniform("transform", glm::mat4(1.0f));
 
 
     auto draw = [&](float deltaTime) {
+        shaderWatcher.checkShaders();
+
         camera.handleMouse(&renderer);
         shader.updateUniform("camera", camera.createCameraMatrix(&renderer));
 

@@ -1,31 +1,30 @@
-#include "ShaderWatcher.hpp"
+#if not defined(__MINGW32__)
 
-#ifndef _WIN32
+#include "ShaderWatcherUnix.hpp"
 
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <unistd.h>
+#include <sys/inotify.h>
 
 namespace GFX {
 
-void ShaderWatcher::attach(Shader &shader) {
+void ShaderWatcher::attach(Shader *shader) {
     shaders.insert(std::pair<Shader *, bool>(&shader, false));
 }
 
 void ShaderWatcher::checkShaders() {
+    // old implementation which read a file each frame:
     /*
-    // fetch source code into these 2 tmp variables
-    // if they differ from the new fetched source code
-    // then recompile.
     std::string vertexSource, fragmentSource;
 
     for (auto *shader : shaders) {
         vertexSource = shader->vertexSource;
         fragmentSource = shader->fragmentSource;
-        
+
         shader->fetchSource();
-        
+
         if (vertexSource != shader->vertexSource || fragmentSource != shader->fragmentSource) {
             if (!shader->recompile())
                 std::cerr << "Shader change detected, but recompilation failed.\n";
@@ -75,13 +74,13 @@ ShaderWatcher::ShaderWatcher() {
                     std::stringstream ss(event->name);
                     std::getline(ss, shaderName, '.');
 
-                    shadersLock.lock();
-                    for (auto &shader : shaders) {
+                    this->shadersLock.lock();
+                    for (auto &shader : this->shaders) {
                         if (shader.first->shaderName == shaderName) {
                             shader.second = true;
                         }
                     }
-                    shadersLock.unlock();
+                    this->shadersLock.unlock();
                 }
                 i += sizeof(struct inotify_event) + event->len;
             }

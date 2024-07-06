@@ -5,11 +5,11 @@ set(CMAKE_CXX_STANDARD 17)
 
 file(GLOB SRC_FILES ./src/*.cpp)
 file(GLOB SRC_VO_FILES ./src/vo/*.cpp)
-
+file(GLOB SRC_SHADERWATCHER_FILES ./src/shaderwatcher/*.cpp)
 
 IF (WIN32)
-    add_executable(gfx_test ${SRC_FILES} ${SRC_VO_FILES} main.cpp)
-    add_library(gfx STATIC ${SRC_FILES} ${SRC_VO_FILES})
+    add_executable(gfx_test ${SRC_FILES} ${SRC_VO_FILES} ${SRC_SHADERWATCHER_FILES} main.cpp)
+    add_library(gfx STATIC ${SRC_FILES} ${SRC_VO_FILES} ${SRC_SHADERWATCHER_FILES})
     target_include_directories(gfx PUBLIC include)
     target_include_directories(gfx_test PUBLIC include)
     target_link_directories(gfx PUBLIC lib)
@@ -24,14 +24,16 @@ ELSE()
 
     add_library(gfx SHARED 
         ${SRC_FILES} 
-        ${SRC_VO_FILES} 
+        ${SRC_VO_FILES}
+        ${SRC_SHADERWATCHER_FILES}
         ${IMGUI_FILES} 
         include/imgui/backends/imgui_impl_glfw.cpp 
         include/imgui/backends/imgui_impl_opengl3.cpp)
 
     add_executable(gfx_test
         ${SRC_FILES} 
-        ${SRC_VO_FILES} 
+        ${SRC_VO_FILES}
+        ${SRC_SHADERWATCHER_FILES}
         ${IMGUI_FILES} 
         include/imgui/backends/imgui_impl_glfw.cpp 
         include/imgui/backends/imgui_impl_opengl3.cpp
