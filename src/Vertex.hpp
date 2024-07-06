@@ -8,6 +8,8 @@ namespace GFX {
 // universally will apply to all vertex shaders.
 struct Vertex {
     glm::vec3 position;
+    glm::vec2 texCoord;
+    glm::vec3 normal;
 };
 
 }; // namespace GFX

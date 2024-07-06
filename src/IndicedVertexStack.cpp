@@ -30,6 +30,8 @@ void IndicedVertexStack::compile() {
     this->ebo.bind();
     this->ebo.setBufferData(&this->indices[0], this->indices.size() * sizeof(unsigned int));
     this->vbo.setAttribPointer(0, 3, sizeof(this->vertices[0]), 0);
+    this->vbo.setAttribPointer(1, 2, sizeof(this->vertices[0]), 3);
+    this->vbo.setAttribPointer(2, 3, sizeof(this->vertices[0]), 5);
     this->vao.unbind();
 
     this->compiled = true;
@@ -47,11 +49,13 @@ IndicedVertexStack::IndicedVertexStack(std::vector<Vertex> vertices, std::vector
 IndicedVertexStack::~IndicedVertexStack() = default;
 
 std::ostream &operator<<(std::ostream& os, const IndicedVertexStack& stack) {
-    os << "IndicedVertexStack {\n";
-    os << "    vertices: " << stack.vertices.size() << " vertices\n";
-    os << "    indices: " << stack.indices.size() << " indices\n";
-    os << "    compiled: " << stack.compiled << "\n";
-    os << "}";
+    for (Vertex v : stack.vertices) {
+        os << "vertex {\n";
+        os << "       position: " << v.position.x << ", " << v.position.y << ", " << v.position.z << "\n";
+        os << "       texCoord: " << v.texCoord.x << ", " << v.texCoord.y << "\n";
+        os << "       normal: " << v.normal.x << ", " << v.normal.y << ", " << v.normal.z << "\n";
+        os << "};\n";
+    }
     return os;
 }
 

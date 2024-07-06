@@ -9,6 +9,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <iostream>
 
 namespace GFX {
 
@@ -45,10 +46,13 @@ glm::vec3 parseTripleFace(const std::string& face) {
 void Model::loadModel() {
     // we must first load them into here so we can assemble them together in the end.
     std::vector<glm::vec3> tmpVertices;
+    std::vector<glm::vec2> tmpTexCoords;
+    std::vector<glm::vec3> tmpNormals;
 
+    // indices
     std::vector<unsigned int> tmpIndices;
-    std::vector<unsigned int> tmpTexCoords;
-    std::vector<unsigned int> tmpNormals;
+    std::vector<unsigned int> tmpTexCoordIndices;
+    std::vector<unsigned int> tmpNormalIndices;
 
     std::ifstream file(this->path);
     if (!file.is_open())
@@ -70,6 +74,18 @@ void Model::loadModel() {
 
             ss >> token >> x >> y >> z;
             tmpVertices.emplace_back(x, y, z);
+        } else if (line.substr(0, 2) == "vn") {
+            std::string token;
+            int x, y, z;
+
+            ss >> token >> x >> y >> z;
+            tmpNormals.emplace_back(x, y, z);
+        } else if (line.substr(0, 2) == "vt") {
+            std::string token;
+            int x, y;
+
+            ss >> token >> x >> y;
+            tmpTexCoords.emplace_back(x, y);
         } else if (line.substr(0, 1) == "f") {
             if (line.find('/') != std::string::npos) {
                 // the format of the face is "f vertex/texCoord/normal * 4" OR * 3 in this case.
@@ -87,19 +103,19 @@ void Model::loadModel() {
                 ss >> token >> x >> y >> z;
 
                 glm::vec3 xFace = parseTripleFace(x);
-                tmpIndices.push_back(xFace.x);
-                //tmpTexCoords.push_back(xFace.y);
-                //tmpNormals.push_back(xFace.z);
+                tmpIndices.emplace_back(xFace.x - 1);
+                tmpTexCoordIndices.emplace_back(xFace.y);
+                tmpNormalIndices.emplace_back(xFace.z);
 
                 glm::vec3 yFace = parseTripleFace(y);
-                tmpIndices.push_back(yFace.x);
-                //tmpTexCoords.push_back(yFace.y);
-                //tmpNormals.push_back(yFace.z);
+                tmpIndices.emplace_back(yFace.x - 1);
+                tmpTexCoordIndices.emplace_back(yFace.y);
+                tmpNormalIndices.emplace_back(yFace.z);
 
                 glm::vec3 zFace = parseTripleFace(z);
-                tmpIndices.push_back(zFace.x);
-                //tmpTexCoords.push_back(zFace.y);
-                //tmpNormals.push_back(zFace.z);
+                tmpIndices.emplace_back(zFace.x - 1);
+                tmpTexCoordIndices.emplace_back(zFace.y);
+                tmpNormalIndices.emplace_back(zFace.z);
 
             } else {
                 // the format of the face is "f x y z" in this case.
@@ -118,11 +134,25 @@ void Model::loadModel() {
 
     file.close();
 
-    for (size_t i = 0; i < tmpVertices.size(); i++) {
-        this->vertexStack.addVertex({tmpVertices[i]});
+    std::vector<Vertex> vertices;
+
+    for (glm::vec3 normals : tmpNormals) {
+        std::cout << "normal: " << normals.x << ", " << normals.y << ", " << normals.z << "\n";
     }
-    for (size_t i = 0; i < tmpIndices.size(); i++) {
-        this->vertexStack.addIndex(tmpIndices[i]);
+
+    for (size_t i = 0; i < tmpVertices.size(); i++) {
+        vertices.emplace_back(Vertex {
+            tmpVertices[i],
+            tmpTexCoords[tmpTexCoordIndices[i]],
+            tmpNormals[tmpNormalIndices[i]]
+        });
+    }
+
+    for (Vertex &v : vertices) {
+        this->vertexStack.addVertex(v);
+    }
+    for (unsigned int tmpIndice : tmpIndices) {
+        this->vertexStack.addIndex(tmpIndice);
     }
 
 }
@@ -136,6 +166,8 @@ Model::Model(std::string path) : path(std::move(path)), vertexStack(IndicedVerte
         throw std::runtime_error("Model does not exist.");
 
     this->loadModel();
+
+    std::cout << this->vertexStack << "\n";
 }
 
 Model::~Model() {

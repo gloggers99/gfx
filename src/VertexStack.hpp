@@ -28,7 +28,7 @@ public:
     void compile();
 
     VertexStack();
-    VertexStack(std::vector<Vertex> vertices);
+    explicit VertexStack(std::vector<Vertex> vertices);
     ~VertexStack();
 
     friend std::ostream &operator<<(std::ostream& os, const VertexStack& stack);

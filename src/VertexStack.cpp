@@ -27,6 +27,8 @@ void VertexStack::compile() {
     this->vbo.bind();
     this->vbo.setBufferData(&this->vertices[0], this->vertices.size() * sizeof(Vertex));
     this->vbo.setAttribPointer(0, 3, sizeof(this->vertices[0]), 0);
+    this->vbo.setAttribPointer(1, 2, sizeof(this->vertices[0]), 3);
+    this->vbo.setAttribPointer(2, 3, sizeof(this->vertices[0]), 5);
     this->vao.unbind();
 
     this->compiled = true;

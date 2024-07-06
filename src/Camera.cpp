@@ -80,10 +80,19 @@ void Camera::handleMouse(Renderer *renderer, float sensitivity) {
     cameraFront = glm::normalize(front);
 }
 
-Camera::Camera(float fov) : fov(fov),
+Camera::Camera(Renderer *renderer, float fov) :
     cameraPos(glm::vec3(0.0f, 0.0f, 3.0f)),
     cameraFront(glm::vec3(0.0f, 0.0f, -1.0f)),
-    cameraUp(glm::vec3(0.0f, 1.0f, 0.0f)) {
+    cameraUp(glm::vec3(0.0f, 1.0f, 0.0f)),
+    fov(90.0f),
+    firstMouse(true),
+    yaw(-90.0f),
+    pitch(0.0f) {
+    int w, h;
+    renderer->getSize(&w, &h);
+
+    this->lastX = static_cast<float>(w) / 2.0f;
+    this->lastY = static_cast<float>(h) / 2.0f;
 }
 
 Camera::~Camera() = default;
