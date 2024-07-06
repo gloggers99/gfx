@@ -1,5 +1,6 @@
 #include <iostream>
 #include "src/GFX.hpp"
+#include "glm/fwd.hpp"
 
 int main() {
     GFX::Renderer renderer = GFX::Renderer();
