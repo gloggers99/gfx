@@ -141,10 +141,11 @@ void Model::loadModel() {
     }
 
     for (size_t i = 0; i < tmpVertices.size(); i++) {
+
         vertices.emplace_back(Vertex {
             tmpVertices[i],
-            tmpTexCoords[tmpTexCoordIndices[i]],
-            tmpNormals[tmpNormalIndices[i]]
+            tmpTexCoords[tmpTexCoordIndices[i * 3]],
+            tmpNormals[tmpNormalIndices[i * 3]]
         });
     }
 

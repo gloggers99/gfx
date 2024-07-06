@@ -6,11 +6,15 @@ int main() {
     GFX::Camera camera = GFX::Camera(&renderer);
 
     GFX::Model model = GFX::Model("./obj/test2.obj");
-    GFX::Shader shader = GFX::Shader("defaultShader");
+    GFX::Shader shader = GFX::Shader("lightingShader");
     GFX::ShaderWatcher shaderWatcher = GFX::ShaderWatcher();
     shaderWatcher.attach(&shader);
 
     shader.updateUniform("transform", glm::mat4(1.0f));
+
+    shader.updateUniform("lightPos", glm::vec3(1.2f, 1.2f, 2.0f));
+    shader.updateUniform("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+    shader.updateUniform("objectColor", glm::vec3(1.0f, 0.5f, 0.31f));
 
 
     auto draw = [&](float deltaTime) {
@@ -18,6 +22,7 @@ int main() {
 
         camera.handleMouse(&renderer);
         shader.updateUniform("camera", camera.createCameraMatrix(&renderer));
+        shader.updateUniform("viewPos", camera.getCameraPos());
 
         renderer.clear();
         renderer.clearColor(0.2, 0.3, 0.3, 1.0);
