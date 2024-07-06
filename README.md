@@ -27,7 +27,7 @@ GFX is a simple C++ graphics library that uses GLFW to create a basic multiplatf
 <sub><sup>Automatic shader hot reloading showcase</sup></sub>
 ### Features
 - [X] Easy to use VAO, VBO, and EBO classes
-- [X] .OBJ file importer made from scratch built for efficiency (WIP)
+- [X] Insanely fast OBJ importer (12 thousand triangles in 300 milliseconds)
 - [ ] Texture System (needs to be redone)
 - [X] Multithreaded automatic hot reloadable shader compilation
 - [X] Compatibility with ALL custom opengl drawing code (theoretically you could use GFX to load OpenGL then use OpenGL code to do the rest)
@@ -131,7 +131,7 @@ int main() {
 }
 ```
 ### OBJ Loader
-The OBJ loader in GFX is made completely from scratch using bare C++, its priority is speed and accuracy and compatibility. Currently it is capable of loading a model with 12 thousand faces in 300 milliseconds. Only triangulated models are supported right now, in the future quad conversion will be implemented.
+The OBJ loader in GFX is made completely from scratch using bare C++, its priority is speed and accuracy and compatibility. Currently it is capable of loading a model with ~12 thousand faces in ~300 milliseconds, and a model with 345 thousand faces (stanford armadillo) in just over 1100 milliseconds. Only triangulated models are supported right now, in the future quad conversion will be implemented.
 ```cpp
 #include <GFX.h>
 

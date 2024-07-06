@@ -16,33 +16,40 @@
 namespace GFX {
 
 glm::vec3 parseTripleFace(const std::string& face) {
-    std::stringstream ss(face);
-    std::string x, y, z;
-    getline(ss, x, '/');
-    getline(ss, y, '/');
-    getline(ss, z, '/');
+    glm::vec3 result(0, 0, 0);  // Initialize to zeros
+    size_t firstSlash = face.find('/');
+    size_t secondSlash = face.find('/', firstSlash + 1);
 
-    unsigned int xi = 0;
-    unsigned int yi = 0;
-    unsigned int zi = 0;
+    if (firstSlash != std::string::npos) {
+        // Parse vertex index
+        if (firstSlash > 0) {
+            result.x = std::strtol(face.c_str(), nullptr, 10);
+        }
 
-    try {
-        xi = std::stoi(x);
-    } catch (std::exception &e) {}
+        // Parse texture coordinate index
+        if (secondSlash != std::string::npos) {
+            if (secondSlash > firstSlash + 1) {
+                result.y = std::strtol(face.c_str() + firstSlash + 1, nullptr, 10);
+            } else {
+                result.y = -1;  // Indicate that the texture coordinate is missing
+            }
+            // Parse normal index
+            if (secondSlash < face.size() - 1) {
+                result.z = std::strtol(face.c_str() + secondSlash + 1, nullptr, 10);
+            } else {
+                result.z = -1;  // Indicate that the normal is missing
+            }
+        } else {
+            // If there's only one slash, it means the format is v/t
+            result.y = std::strtol(face.c_str() + firstSlash + 1, nullptr, 10);
+            result.z = -1;  // Indicate that the normal is missing
+        }
+    } else {
+        // Only vertex index is present
+        result.x = std::strtol(face.c_str(), nullptr, 10);
+    }
 
-    try {
-        yi = std::stoi(y);
-    } catch (std::exception &e) {}
-
-    try {
-        zi = std::stoi(z);
-    } catch (std::exception &e) {}
-
-    return {
-            xi,
-            yi,
-            zi
-    };
+    return result;
 }
 
 void Model::loadModel() {
@@ -53,8 +60,8 @@ void Model::loadModel() {
     std::vector<glm::vec3> tmpNormals;
 
     std::vector<unsigned int> tmpIndices;
-    std::vector<unsigned int> tmpTexCoordIndices;
-    std::vector<unsigned int> tmpNormalIndices;
+    std::vector<int> tmpTexCoordIndices;  // Use int to allow -1 for missing indices
+    std::vector<int> tmpNormalIndices;    // Use int to allow -1 for missing indices
 
     std::ifstream file(this->path);
     if (!file.is_open())
@@ -106,12 +113,12 @@ void Model::loadModel() {
 
     file.close();
 
-    if (!tmpNormalIndices.empty() || !tmpTexCoordIndices.empty()) {
-        // utilize hashing for faster comparison of Vertex's
+    if (!tmpTexCoordIndices.empty() || !tmpNormalIndices.empty()) {
+        // Utilize hashing for faster comparison of Vertex's
         struct VertexKey {
             unsigned int vertexIndex;
-            unsigned int texCoordIndex;
-            unsigned int normalIndex;
+            int texCoordIndex;  // Use int to allow -1 for missing texture coordinates
+            int normalIndex;    // Use int to allow -1 for missing normals
 
             bool operator==(const VertexKey &other) const {
                 return vertexIndex == other.vertexIndex &&
@@ -123,8 +130,8 @@ void Model::loadModel() {
         struct VertexKeyHash {
             std::size_t operator()(const VertexKey &key) const {
                 return ((std::hash<unsigned int>()(key.vertexIndex) ^
-                         (std::hash<unsigned int>()(key.texCoordIndex) << 1)) >> 1) ^
-                       (std::hash<unsigned int>()(key.normalIndex) << 1);
+                         (std::hash<int>()(key.texCoordIndex) << 1)) >> 1) ^
+                       (std::hash<int>()(key.normalIndex) << 1);
             }
         };
 
@@ -138,8 +145,12 @@ void Model::loadModel() {
             if (uniqueVertices.find(key) == uniqueVertices.end()) {
                 Vertex vertex = {};
                 vertex.position = tmpVertices[key.vertexIndex];
-                vertex.texCoord = tmpTexCoords[key.texCoordIndex];
-                vertex.normal = tmpNormals[key.normalIndex];
+                if (key.texCoordIndex >= 0) {
+                    vertex.texCoord = tmpTexCoords[key.texCoordIndex];
+                }
+                if (key.normalIndex >= 0) {
+                    vertex.normal = tmpNormals[key.normalIndex];
+                }
 
                 uniqueVertices[key] = vertices.size();
                 vertices.push_back(vertex);

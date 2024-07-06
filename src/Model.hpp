@@ -18,7 +18,7 @@ private:
 public:
     void draw(Shader *shader);
 
-    Model(std::string path);
+    explicit Model(std::string path);
     ~Model();
 };
 
