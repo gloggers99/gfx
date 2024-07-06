@@ -144,8 +144,8 @@ void Model::loadModel() {
 
         vertices.emplace_back(Vertex {
             tmpVertices[i],
-            tmpTexCoords[tmpTexCoordIndices[i * 3]],
-            tmpNormals[tmpNormalIndices[i * 3]]
+            tmpTexCoords[tmpTexCoordIndices[i]],
+            tmpNormals[tmpNormalIndices[i]]
         });
     }
 
