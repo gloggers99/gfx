@@ -94,7 +94,7 @@ void Renderer::loop(const std::function<void(float)>& loopFunction) {
     }
 }
 
-Renderer::Renderer() {
+Renderer::Renderer(std::string windowName) : windowName(std::move(windowName)) {
     if (!glfwInit())
         throw std::runtime_error("Failed to initialize GLFW");
 
@@ -104,7 +104,7 @@ Renderer::Renderer() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_FLOATING, 1);
 
-    this->window = glfwCreateWindow(640, 480, "gfx", nullptr, nullptr);
+    this->window = glfwCreateWindow(640, 480, this->windowName.c_str(), nullptr, nullptr);
 
     if (!this->window)
         throw std::runtime_error("Failed to create window");

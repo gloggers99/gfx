@@ -3,11 +3,14 @@
 #include <functional>
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
+#include <string>
 
 namespace GFX {
 
 class Renderer{
 private:
+    std::string windowName;
+
     // glfw stuff
     GLFWwindow *window;
 
@@ -41,7 +44,7 @@ public:
 
     void loop(const std::function<void(float)>&);
 
-    Renderer();
+    explicit Renderer(std::string windowName = "gfx");
     ~Renderer();
 };
 

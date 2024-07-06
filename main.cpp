@@ -11,6 +11,7 @@ int main() {
 
     shader.updateUniform("transform", glm::mat4(1.0f));
 
+
     auto draw = [&](float deltaTime) {
         camera.handleMouse(&renderer);
         shader.updateUniform("camera", camera.createCameraMatrix(&renderer));
