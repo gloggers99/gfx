@@ -91,7 +91,6 @@ ShaderWatcher::ShaderWatcher() {
                         std::getline(ss, shaderName, L'.');
 
                         this->shadersLock.lock();
-                        this->shadersLock.unlock();
 
                         for (auto &shader : this->shaders) {
                             std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
@@ -100,6 +99,8 @@ ShaderWatcher::ShaderWatcher() {
                                 shader.second = true;
                             }
                         }
+
+                        this->shadersLock.unlock();
 
                         break;
                 }
