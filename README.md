@@ -131,7 +131,9 @@ int main() {
 }
 ```
 ### OBJ Loader
-The OBJ loader in GFX is made completely from scratch using bare C++, its priority is speed and accuracy and compatibility. Currently it is capable of loading a model with ~12 thousand faces in ~300 milliseconds, and a model with 345 thousand faces (stanford armadillo) in just over 1100 milliseconds. Only triangulated models are supported right now, in the future quad conversion will be implemented.
+The OBJ loader in GFX is made completely from scratch using bare C++, its priority is speed and accuracy and compatibility. Currently it is capable of loading a model with ~12 thousand faces in ~300 milliseconds, and a model with 345 thousand faces (stanford armadillo) in just over 1100 milliseconds.
+> [!CAUTION]
+> Do not import models that use quads, if you are using blender export with the triangulate toggle on. Loading quads is a WIP feature.
 ```cpp
 #include <GFX.h>
 
