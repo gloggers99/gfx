@@ -4,9 +4,15 @@
 #include <thread>
 #include <mutex>
 
-#include "IndicedVertexStack.hpp"
+#include "VertexStack.hpp"
 
 namespace GFX {
+
+struct Vertex {
+    glm::vec3 position;
+    glm::vec2 texCoord;
+    glm::vec3 normal;
+};
 
 class Model {
 private:
@@ -16,12 +22,13 @@ private:
     std::string modelName;
     std::string path;
 
-    IndicedVertexStack vertexStack;
+    VertexStack<Vertex> vertexStack;
     bool loaded;
 
     void loadModel();
 
 public:
+    bool isLoaded();
     void draw(Shader *shader);
 
     explicit Model(std::string path);

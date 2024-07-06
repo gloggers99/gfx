@@ -1,5 +1,5 @@
 #include "Model.hpp"
-#include "IndicedVertexStack.hpp"
+#include "VertexStack.hpp"
 
 #include <algorithm>
 #include <chrono>
@@ -188,12 +188,16 @@ void Model::loadModel() {
     this->importThread = std::thread(loadFunc);
 }
 
+bool Model::isLoaded() {
+    return this->loaded;
+}
+
 void Model::draw(Shader *shader) {
     if (this->loaded)
         this->vertexStack.draw(shader);
 }
 
-Model::Model(std::string path) : modelName("missing name"), path(std::move(path)), vertexStack(IndicedVertexStack()), loaded(false) {
+Model::Model(std::string path) : modelName("missing name"), path(std::move(path)), vertexStack(VertexStack<Vertex>({ 3, 2, 3 })), loaded(false) {
     if (!std::filesystem::exists(this->path))
         throw std::runtime_error("Model does not exist.");
 

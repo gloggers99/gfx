@@ -39,7 +39,7 @@ GFX is a simple C++ graphics library that uses GLFW to create a basic multiplatf
 #### Linux/Mac
 GFX will eventually be added to package repositories when I believe it is stable and actually usable. For now the following commands will work.  
 You will need to have the following dependencies installed:
-- cmake (3.5 or above)
+- cmake (3.2 or above)
 - gcc (g++ in specific)
 - make
 - git
@@ -63,14 +63,21 @@ int main() {
     GFX::Shader shader = GFX::Shader("defaultShader");
     GFX::Camera camera = GFX::Camera();
 
-    // the definition of a vertex is subject to change.
-    std::vector<GFX::Vertex> vertices = {
-        {{0.5, -0.5, 0.0}},
-        {{-0.5, -0.5, 0.0}},
-        {{0.0, 0.5, 0.0}}
+    // define how you want your vertex to be formatted:
+    struct MyVertex {
+        glm::vec3 pos;
     };
+    
+    // define the memory layout of your vertex:
+    // each member of this vector should be the 
+    // amount of float values in the section
+    std::vector<unsigned int> vertexTable = { 3 };
 
-    GFX::VertexStack stack = GFX::VertexStack(vertices);
+    GFX::VertexStack stack = GFX::VertexStack<MyVertex>({
+        { { 0.5, -0.5, 0.0 } },
+        { { -0.5, -0.5, 0.0 } },
+        { { 0.0, 0.5, 0.0 } }
+    }, vertexTable);
 
     auto draw = [&](float deltaTime) {
         shader.updateUniform("camera", camera.createCameraMatrix(&renderer));

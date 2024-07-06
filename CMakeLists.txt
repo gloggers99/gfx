@@ -9,6 +9,7 @@ file(GLOB SRC_SHADERWATCHER_FILES ./src/shaderwatcher/*.cpp)
 
 IF (WIN32)
     add_executable(gfx_test ${SRC_FILES} ${SRC_VO_FILES} ${SRC_SHADERWATCHER_FILES} main.cpp)
+    #target_link_options(gfx_test PUBLIC -mwindows)
     add_library(gfx STATIC ${SRC_FILES} ${SRC_VO_FILES} ${SRC_SHADERWATCHER_FILES})
     target_include_directories(gfx PUBLIC include)
     target_include_directories(gfx_test PUBLIC include)
