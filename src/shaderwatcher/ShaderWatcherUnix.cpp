@@ -11,7 +11,7 @@
 namespace GFX {
 
 void ShaderWatcher::attach(Shader *shader) {
-    shaders.insert(std::pair<Shader *, bool>(&shader, false));
+    shaders.insert(std::pair<Shader *, bool>(shader, false));
 }
 
 void ShaderWatcher::checkShaders() {

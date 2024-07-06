@@ -1,6 +1,7 @@
 #if not defined(__MINGW32__)
 
-#include "Shader.hpp"
+#include "IShaderWatcher.h"
+#include "../Shader.hpp"
 
 #include <map>
 #include <mutex>
@@ -33,7 +34,7 @@ private:
     std::mutex shadersLock;
 
 public:
-    void attach(Shader &shader) override;
+    void attach(Shader *shader) override;
     void checkShaders() override;
 
     ShaderWatcher();
