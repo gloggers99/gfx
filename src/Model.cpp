@@ -1,18 +1,18 @@
 #include "Model.hpp"
 #include "IndicedVertexStack.hpp"
+
 #include <algorithm>
 #include <cstdlib>
 #include <exception>
 #include <filesystem>
 #include <fstream>
-#include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
 
 namespace GFX {
 
-    glm::vec3 parseTripleFace(std::string face) {
+    glm::vec3 parseTripleFace(const std::string& face) {
         std::stringstream ss(face);
         std::string x, y, z;
         getline(ss, x, '/');
@@ -69,9 +69,9 @@ namespace GFX {
                 float x, y, z;
 
                 ss >> token >> x >> y >> z;
-                tmpVertices.push_back({x, y, z});
+                tmpVertices.emplace_back(x, y, z);
             } else if (line.substr(0, 1) == "f") {
-                if (line.find("/") != std::string::npos) {
+                if (line.find('/') != std::string::npos) {
                     // the format of the face is "f vertex/texCoord/normal * 4" OR * 3 in this case.
                     // this is just ridiculous
 
@@ -87,19 +87,16 @@ namespace GFX {
                     ss >> token >> x >> y >> z;
 
                     glm::vec3 xFace = parseTripleFace(x);
-                    std::cout << "added index: " << xFace.x << "\n";
                     tmpIndices.push_back(xFace.x);
                     //tmpTexCoords.push_back(xFace.y);
                     //tmpNormals.push_back(xFace.z);
 
                     glm::vec3 yFace = parseTripleFace(y);
-                    std::cout << "added index: " << yFace.x << "\n";
                     tmpIndices.push_back(yFace.x);
                     //tmpTexCoords.push_back(yFace.y);
                     //tmpNormals.push_back(yFace.z);
 
                     glm::vec3 zFace = parseTripleFace(z);
-                    std::cout << "added index: " << zFace.x << "\n";
                     tmpIndices.push_back(zFace.x);
                     //tmpTexCoords.push_back(zFace.y);
                     //tmpNormals.push_back(zFace.z);
@@ -116,7 +113,6 @@ namespace GFX {
                 }
 
             } else {
-                std::cout << "Ignoring line: " << line << "\n";
             }
         }
 
@@ -140,9 +136,6 @@ namespace GFX {
             throw std::runtime_error("Model does not exist.");
 
         this->loadModel();
-
-        std::cout << "Loading model: " << path << "\n";
-        std::cout << this->vertexStack << "\n";
     }
 
     Model::~Model() {
