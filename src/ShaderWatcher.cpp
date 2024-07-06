@@ -1,12 +1,14 @@
 #include "ShaderWatcher.hpp"
 
+#ifndef _WIN32
+#define
+
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <unistd.h>
 
 namespace GFX {
-
 
 void ShaderWatcher::attach(Shader &shader) {
     shaders.insert(std::pair<Shader *, bool>(&shader, false));
@@ -95,3 +97,5 @@ ShaderWatcher::~ShaderWatcher() {
 }
 
 }; // namespace GFX
+
+#endif

@@ -1,5 +1,8 @@
 #include "Shader.hpp"
 
+#ifndef _WIN32
+#define
+
 #include <map>
 #include <mutex>
 #include <thread>
@@ -39,3 +42,5 @@ public:
 };
 
 }; // namespace GFX
+
+#endif

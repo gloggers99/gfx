@@ -7,7 +7,6 @@
 #include "Renderer.hpp"
 #include "Shader.hpp"
 #include "Camera.hpp"
-#include "Texture.hpp"
 #include "ShaderWatcher.hpp"
 #include "VertexStack.hpp"
 #include "Model.hpp"
