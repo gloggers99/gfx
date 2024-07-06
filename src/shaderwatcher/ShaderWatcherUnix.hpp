@@ -1,6 +1,6 @@
 #if not defined(__MINGW32__)
 
-#include "IShaderWatcher.h"
+#include "IShaderWatcher.hpp"
 #include "../Shader.hpp"
 
 #include <map>
