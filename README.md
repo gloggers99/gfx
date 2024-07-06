@@ -131,7 +131,7 @@ int main() {
 }
 ```
 ### OBJ Loader
-The OBJ loader is currently WIP, however it can still load in simple models defined with triangles, NO QUADS, quad support will be added in the future. Currently all that gets loaded are vertices, textures and normals will be added in the future.
+The OBJ loader in GFX is made completely from scratch using bare C++, its priority is speed and accuracy and compatibility. Currently it is capable of loading a model with 12 thousand faces in 300 milliseconds. Only triangulated models are supported right now, in the future quad conversion will be implemented.
 ```cpp
 #include <GFX.h>
 
