@@ -2,16 +2,17 @@
 
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
+#include "IVO.hpp"
 
 namespace GFX {
 
-class VBO {
+class VBO : IVO {
 private:
     GLuint vbo;
 public:
-    GLuint getVBO();
-    void bind();
-    void unbind();
+    GLuint get() override;
+    void bind() override;
+    void unbind() override;
     void setBufferData(const void *data, size_t size);
     void setAttribPointer(GLint index, GLint size, int stride, int offset);
 

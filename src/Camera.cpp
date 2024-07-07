@@ -84,7 +84,7 @@ Camera::Camera(Renderer *renderer, float fov) :
     cameraPos(glm::vec3(0.0f, 0.0f, 3.0f)),
     cameraFront(glm::vec3(0.0f, 0.0f, -1.0f)),
     cameraUp(glm::vec3(0.0f, 1.0f, 0.0f)),
-    fov(90.0f),
+    fov(fov),
     firstMouse(true),
     yaw(-90.0f),
     pitch(0.0f) {

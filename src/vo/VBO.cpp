@@ -2,7 +2,7 @@
 
 namespace GFX {
 
-GLuint VBO::getVBO() {
+GLuint VBO::get() {
     return this->vbo;
 }
 

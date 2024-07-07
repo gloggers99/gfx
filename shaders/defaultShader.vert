@@ -1,15 +1,11 @@
-#version 330
+#version 330 core
 
-layout (location = 0) in vec3 position;
-layout (location = 2) in vec3 normal;
+layout (location = 0) in vec2 position;
+layout (location = 1) in vec2 texCoords;
 
-uniform mat4 transform = mat4(1.0);
-uniform mat4 camera;
-
-out vec3 Normal;
+out vec2 TexCoords;
 
 void main() {
-    //gl_Position = camera * transform * vec4(position, 1.0);
-    gl_Position = camera * transform * vec4(position, 1.0);
-    Normal = mat3(transpose(inverse(transform))) * normal;
+    TexCoords = texCoords;
+    gl_Position = vec4(position.x, position.y, 0.0, 1.0);
 }

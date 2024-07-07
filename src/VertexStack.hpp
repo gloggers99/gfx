@@ -26,6 +26,7 @@ private:
     bool compiled;
 
 public:
+    VAO getVAO() {return this->vao;}
     void addVertex(T vertex) {
         this->vertices.emplace_back(vertex);
         if (compiled)
@@ -78,8 +79,9 @@ public:
     VertexStack(std::vector<T> vertices, std::vector<unsigned int> vertexTable) :
             vertices(std::move(vertices)),
             vertexTable(std::move(vertexTable)),
-            compiled(false), vao(VAO()), vbo(VBO()), ebo(EBO()) {}
-    explicit VertexStack(std::vector<unsigned int> vertexTable) : vertexTable(std::move(vertexTable)), compiled(false), vao(VAO()), vbo(VBO()), ebo(EBO()) {}
+            vao(VAO()), vbo(VBO()), ebo(EBO()),
+            compiled(false) {}
+    explicit VertexStack(std::vector<unsigned int> vertexTable) : vertexTable(std::move(vertexTable)), vao(VAO()), vbo(VBO()), ebo(EBO()), compiled(false) {}
     //VertexStack(std::vector<T> vertices, std::vector<unsigned int> vertexTable);
     ~VertexStack() = default;
 };

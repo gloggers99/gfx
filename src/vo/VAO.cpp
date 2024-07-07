@@ -2,7 +2,7 @@
 
 namespace GFX {
 
-GLuint VAO::getVAO() {
+GLuint VAO::get() {
     return this->vao;
 }
 

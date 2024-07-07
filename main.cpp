@@ -1,41 +1,50 @@
 #include <iostream>
 #include "src/GFX.hpp"
+#include "src/vo/FBO.hpp"
+#include "src/vo/RBO.hpp"
 
 int main() {
     GFX::Renderer renderer = GFX::Renderer();
     GFX::Camera camera = GFX::Camera(&renderer);
 
-    GFX::Model model = GFX::Model("obj/armadillo.obj")
+    GFX::Model model = GFX::Model("obj/armadillo.obj");
 
-    GFX::Shader shader = GFX::Shader("defaultShader");
+    GFX::Shader defaultShader = GFX::Shader("defaultShader");
+    GFX::Shader camShader = GFX::Shader("camShader");
+
     GFX::ShaderWatcher shaderWatcher = GFX::ShaderWatcher();
-    shaderWatcher.attach(&shader);
+    shaderWatcher.attach(&defaultShader);
+    shaderWatcher.attach(&camShader);
 
-    shader.updateUniform("transform", glm::mat4(1.0f));
+    //shader.updateUniform("transform", glm::mat4(1.0f));
 
-    struct MyVertex {
-        glm::vec3 pos;
+    struct Vertex {
+        glm::vec2 position;
+        glm::vec2 texCoords;
     };
 
-    std::vector<unsigned int> vertexTable = { 3 };
+    GFX::VertexStack stack = GFX::VertexStack<Vertex>({
+                    {{1.0, 1.0}, {1.0, 1.0}},
+                    {{1.0, -1.0}, {1.0, 0.0}},
+                    {{-1.0, 1.0}, {0.0, 1.0}},
 
-    GFX::VertexStack stack = GFX::VertexStack<MyVertex>({
-        { { 0.5, -0.5, 0.0 } },
-        { { -0.5, -0.5, 0.0 } },
-        { { 0.0, 0.5, 0.0 } }
-    }, vertexTable);
+                    {{1.0, -1.0}, {1.0, 0.0}},
+                    {{-1.0, -1.0}, {0.0, 0.0}},
+                    {{-1.0, 1.0}, {0.0, 1.0}}
+    }, {3, 3});
+
+
 
     auto draw = [&](float deltaTime) {
         shaderWatcher.checkShaders();
 
         camera.handleMouse(&renderer);
-        shader.updateUniform("camera", camera.createCameraMatrix(&renderer));
+        camShader.updateUniform("camera", camera.createCameraMatrix(&renderer));
 
         renderer.clear();
-        renderer.clearColor(0.2, 0.3, 0.3, 1.0);
+        renderer.clearColor(0.1, 0.1, 0.1, 1.0);
 
-        stack.draw(&shader);
-        model.draw(&shader);
+        model.draw(&camShader);
 
         if (renderer.getKey(GLFW_KEY_W))
             camera.move(GFX::Direction::FORWARD, deltaTime * 2.5f);
@@ -45,6 +54,7 @@ int main() {
             camera.move(GFX::Direction::LEFT, deltaTime * 2.5f);
         if (renderer.getKey(GLFW_KEY_D))
             camera.move(GFX::Direction::RIGHT, deltaTime * 2.5f);
+
     };
 
     renderer.loop(draw);

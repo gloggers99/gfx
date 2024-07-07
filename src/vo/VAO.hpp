@@ -2,16 +2,17 @@
 
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
+#include "IVO.hpp"
 
 namespace GFX {
 
-class VAO {
+class VAO : IVO {
 private:
     GLuint vao;
 public:
-    GLuint getVAO();
-    void bind();
-    void unbind();
+    GLuint get() override;
+    void bind() override;
+    void unbind() override;
 
     VAO();
     ~VAO();

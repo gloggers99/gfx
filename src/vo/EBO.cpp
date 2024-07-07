@@ -2,7 +2,7 @@
 
 namespace GFX {
 
-GLuint EBO::getEBO() {
+GLuint EBO::get() {
     return this->ebo;
 }
 
