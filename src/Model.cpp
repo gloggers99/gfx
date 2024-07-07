@@ -80,18 +80,19 @@ void Model::loadModel() {
             if (prefix == "v") {
                 glm::vec3 vertex;
                 ss >> vertex.x >> vertex.y >> vertex.z;
-                tmpVertices.push_back(vertex);
+                tmpVertices.emplace_back(vertex);
             } else if (prefix == "vn") {
                 glm::vec3 normal;
                 ss >> normal.x >> normal.y >> normal.z;
-                tmpNormals.push_back(normal);
+                tmpNormals.emplace_back(normal);
             } else if (prefix == "vt") {
                 glm::vec2 texCoord;
                 ss >> texCoord.x >> texCoord.y;
-                tmpTexCoords.push_back(texCoord);
+                tmpTexCoords.emplace_back(texCoord);
             } else if (prefix == "f") {
                 std::string vertexData;
                 if (line.find('/') != std::string::npos) {
+                    // TODO: add check for importing quads
                     for (int i = 0; i < 3; ++i) {  // Assuming triangles
                         ss >> vertexData;
                         glm::vec3 face = parseTripleFace(vertexData);
@@ -206,7 +207,7 @@ Model::Model(std::string path) : modelName("missing name"), path(std::move(path)
 }
 
 Model::~Model() {
-    this->importThread.detach();
+    this->importThread.join();
 }
 
 }; // namespace GFX

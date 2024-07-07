@@ -95,6 +95,7 @@ void Renderer::loop(const std::function<void(float)>& loopFunction) {
 }
 
 Renderer::Renderer(std::string windowName) : windowName(std::move(windowName)) {
+
     if (!glfwInit())
         throw std::runtime_error("Failed to initialize GLFW");
 

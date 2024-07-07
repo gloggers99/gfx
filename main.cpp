@@ -31,9 +31,7 @@ int main() {
                     {{1.0, -1.0}, {1.0, 0.0}},
                     {{-1.0, -1.0}, {0.0, 0.0}},
                     {{-1.0, 1.0}, {0.0, 1.0}}
-    }, {3, 3});
-
-
+    }, {2, 2});
 
     auto draw = [&](float deltaTime) {
         shaderWatcher.checkShaders();

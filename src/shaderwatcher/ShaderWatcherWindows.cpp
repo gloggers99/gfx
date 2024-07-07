@@ -116,6 +116,7 @@ ShaderWatcher::ShaderWatcher() {
 }
 
 ShaderWatcher::~ShaderWatcher() {
+    // TODO: make the shader watcher end properly
     this->shaderWatcherThread.detach();
 }
 
