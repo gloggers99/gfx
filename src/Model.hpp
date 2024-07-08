@@ -5,6 +5,7 @@
 #include <mutex>
 
 #include "VertexStack.hpp"
+#include "hermes/hermes.hpp"
 
 namespace GFX {
 
@@ -16,6 +17,8 @@ struct Vertex {
 
 class Model {
 private:
+    Hermes::Log<char> log = Hermes::Log("GFX::Model", std::cout);
+
     std::thread importThread;
     std::mutex importThreadLock;
 

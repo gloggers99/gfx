@@ -4,11 +4,15 @@
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
 #include <string>
+#include <hermes/hermes.hpp>
+#include <iostream>
 
 namespace GFX {
 
 class Renderer{
 private:
+    Hermes::Log<char> log = Hermes::Log("GFX::Renderer");
+
     std::string windowName;
 
     // glfw stuff

@@ -95,6 +95,7 @@ void Renderer::loop(const std::function<void(float)>& loopFunction) {
 }
 
 Renderer::Renderer(std::string windowName) : windowName(std::move(windowName)) {
+    this->log("initializing renderer...");
 
     if (!glfwInit())
         throw std::runtime_error("Failed to initialize GLFW");
@@ -130,6 +131,7 @@ Renderer::Renderer(std::string windowName) : windowName(std::move(windowName)) {
     ImGui_ImplGlfw_InitForOpenGL(this->window, true);
     ImGui_ImplOpenGL3_Init();
 #endif
+    this->log("renderer initialized");
 }
 
 Renderer::~Renderer() {

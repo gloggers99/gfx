@@ -1,3 +1,6 @@
 [submodule "include/imgui"]
 	path = include/imgui
 	url = https://github.com/ocornut/imgui
+[submodule "include/hermes"]
+	path = include/hermes
+	url = https://github.com/gloggers99/hermes

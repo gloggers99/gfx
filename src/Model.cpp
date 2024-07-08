@@ -183,7 +183,7 @@ void Model::loadModel() {
         auto endTime = std::chrono::high_resolution_clock::now();
 
         this->loaded = true;
-        std::cout << "Model \'" << this->modelName <<  "\' loaded in " << std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count() << "ms\n";
+        this->log(std::string("Model \'" + this->modelName + "\' loaded in " + std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count()) + "ms\n").c_str());
     };
 
     this->importThread = std::thread(loadFunc);
@@ -202,7 +202,8 @@ Model::Model(std::string path) : modelName("missing name"), path(std::move(path)
     if (!std::filesystem::exists(this->path))
         throw std::runtime_error("Model does not exist.");
 
-    std::cout << "Loading model...\n";
+    this->log("Loading model.");
+    this->log("Assuming triangulated model!", Hermes::LogLevel::LOG_WARN);
     this->loadModel();
 }
 
