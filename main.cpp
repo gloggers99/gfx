@@ -9,14 +9,19 @@ int main() {
 
     GFX::Model model = GFX::Model("obj/armadillo.obj");
 
-    GFX::Shader defaultShader = GFX::Shader("defaultShader");
-    GFX::Shader camShader = GFX::Shader("camShader");
+    GFX::Shader defaultShader = GFX::Shader("lightingShader");
 
     GFX::ShaderWatcher shaderWatcher = GFX::ShaderWatcher();
     shaderWatcher.attach(&defaultShader);
-    shaderWatcher.attach(&camShader);
 
-    //shader.updateUniform("transform", glm::mat4(1.0f));
+    defaultShader.updateUniform("transform", glm::mat4(1.0f));
+
+    defaultShader.updateUniform("lightPos", glm::vec3(5.0, 2.0, -5.0));
+    defaultShader.updateUniform("lightColor", glm::vec3(1.0, 1.0, 1.0));
+    defaultShader.updateUniform("objectColor", glm::vec3(1.0, 0.5, 0.31));
+
+    renderer.hideCursor();
+    bool showCursor = false;
 
     struct Vertex {
         glm::vec2 position;
@@ -33,16 +38,23 @@ int main() {
                     {{-1.0, 1.0}, {0.0, 1.0}}
     }, {2, 2});
 
+    renderer.setKeyMap(
+            GFX::KeyMap({
+                {{GLFW_KEY_ESCAPE, GLFW_PRESS, 0}, [&](){
+                    renderer.quit();
+                }}
+            }));
+
     auto draw = [&](float deltaTime) {
         shaderWatcher.checkShaders();
 
         camera.handleMouse(&renderer);
-        camShader.updateUniform("camera", camera.createCameraMatrix(&renderer));
+        defaultShader.updateUniform("camera", camera.createCameraMatrix(&renderer));
 
         renderer.clear();
         renderer.clearColor(0.1, 0.1, 0.1, 1.0);
 
-        model.draw(&camShader);
+        model.draw(&defaultShader);
 
         if (renderer.getKey(GLFW_KEY_W))
             camera.move(GFX::Direction::FORWARD, deltaTime * 2.5f);
@@ -52,8 +64,8 @@ int main() {
             camera.move(GFX::Direction::LEFT, deltaTime * 2.5f);
         if (renderer.getKey(GLFW_KEY_D))
             camera.move(GFX::Direction::RIGHT, deltaTime * 2.5f);
-
     };
+
 
     renderer.loop(draw);
 

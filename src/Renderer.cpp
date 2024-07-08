@@ -14,6 +14,8 @@
 #include <iostream>
 #include <stdexcept>
 
+#include "KeyMap.hpp"
+
 namespace GFX {
 
 void Renderer::framebuffer_size_callback(GLFWwindow *window, int width, int height) {
@@ -25,8 +27,16 @@ void Renderer::error_callback(int error, const char *description) {
 }
 
 void Renderer::key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, GLFW_TRUE);
+    auto *renderer = static_cast<Renderer *>(glfwGetWindowUserPointer(window));
+    renderer->keyMap.callback(window, key, scancode, action, mods);
+}
+
+void Renderer::setKeyMap(const KeyMap& keyMap) {
+    this->keyMap = keyMap;
+}
+
+void Renderer::quit() {
+    glfwSetWindowShouldClose(this->window, GLFW_TRUE);
 }
 
 GLint Renderer::getKey(int key) {
@@ -112,6 +122,7 @@ Renderer::Renderer(std::string windowName) : windowName(std::move(windowName)) {
         throw std::runtime_error("Failed to create window");
 
     glfwMakeContextCurrent(this->window);
+    glfwSetWindowUserPointer(this->window, this);
     glfwSetFramebufferSizeCallback(this->window, Renderer::framebuffer_size_callback);
     glfwSetKeyCallback(this->window, Renderer::key_callback);
     gladLoadGL(glfwGetProcAddress);

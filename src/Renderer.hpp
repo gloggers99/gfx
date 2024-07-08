@@ -1,11 +1,14 @@
 #pragma once
 
-#include <functional>
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
+
+#include <functional>
 #include <string>
-#include <hermes/hermes.hpp>
 #include <iostream>
+#include <hermes/hermes.hpp>
+
+#include "KeyMap.hpp"
 
 namespace GFX {
 
@@ -28,7 +31,12 @@ private:
     static void error_callback(int error, const char *description);
     static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
 
+    KeyMap keyMap;
+
 public:
+    void setKeyMap(const KeyMap& keyMap);
+
+    void quit();
     GLint getKey(int key);
 
     void getSize(int *width, int *height);
