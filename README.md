@@ -35,6 +35,7 @@ GFX is a simple C++ graphics library that uses GLFW to create a basic multiplatf
 - [X] Windows support
 - [X] MacOS support
 - [X] Linux support
+- [X] Logging system implemented with [hermes](https://github.com/gloggers99/hermes)
 ### Installation
 #### Linux/Mac
 GFX will eventually be added to package repositories when I believe it is stable and actually usable. For now the following commands will work.  
