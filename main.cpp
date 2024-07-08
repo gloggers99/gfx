@@ -1,7 +1,6 @@
 #include <iostream>
+
 #include "src/GFX.hpp"
-#include "src/vo/FBO.hpp"
-#include "src/vo/RBO.hpp"
 
 int main() {
     GFX::Renderer renderer = GFX::Renderer();
@@ -23,27 +22,17 @@ int main() {
     renderer.hideCursor();
     bool showCursor = false;
 
-    struct Vertex {
-        glm::vec2 position;
-        glm::vec2 texCoords;
-    };
-
-    GFX::VertexStack stack = GFX::VertexStack<Vertex>({
-                    {{1.0, 1.0}, {1.0, 1.0}},
-                    {{1.0, -1.0}, {1.0, 0.0}},
-                    {{-1.0, 1.0}, {0.0, 1.0}},
-
-                    {{1.0, -1.0}, {1.0, 0.0}},
-                    {{-1.0, -1.0}, {0.0, 0.0}},
-                    {{-1.0, 1.0}, {0.0, 1.0}}
-    }, {2, 2});
-
-    renderer.setKeyMap(
-            GFX::KeyMap({
-                {{GLFW_KEY_ESCAPE, GLFW_PRESS, 0}, [&](){
-                    renderer.quit();
-                }}
-            }));
+    renderer.keyMap.add(
+            {GLFW_KEY_ESCAPE, GLFW_PRESS, 0}, [&]() {
+                showCursor ? renderer.hideCursor() : renderer.showCursor();
+                showCursor = !showCursor;
+            }
+    );
+    renderer.keyMap.add(
+            {GLFW_KEY_Q, GLFW_PRESS, GLFW_MOD_ALT}, [&]() {
+                renderer.quit();
+            }
+    );
 
     auto draw = [&](float deltaTime) {
         shaderWatcher.checkShaders();

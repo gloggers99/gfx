@@ -31,10 +31,6 @@ void Renderer::key_callback(GLFWwindow *window, int key, int scancode, int actio
     renderer->keyMap.callback(window, key, scancode, action, mods);
 }
 
-void Renderer::setKeyMap(const KeyMap& keyMap) {
-    this->keyMap = keyMap;
-}
-
 void Renderer::quit() {
     glfwSetWindowShouldClose(this->window, GLFW_TRUE);
 }

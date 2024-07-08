@@ -23,7 +23,7 @@ typedef struct keyBindHash {
         std::size_t h1 = std::hash<int>()(kb.key);
         std::size_t h2 = std::hash<int>()(kb.action);
         std::size_t h3 = std::hash<int>()(kb.mods);
-        return h1 ^ (h2 << 1) ^ (h3 << 2); // Combine the hashes
+        return h1 ^ (h2 << 1) ^ (h3 << 2);
     }
 } KeyBindHash;
 
@@ -35,8 +35,11 @@ private:
 public:
     void callback(GLFWwindow *window, int key, int _scancode, int action, int mods);
 
+    void add(const KeyBind &keyBind, const KeyMapFunc &keyMapFunc);
+    void set(const std::unordered_map<KeyBind, KeyMapFunc, KeyBindHash> &keyMap);
+
     KeyMap();
-    explicit KeyMap(const std::unordered_map<KeyBind, KeyMapFunc, KeyBindHash>&);
+    explicit KeyMap(const std::unordered_map<KeyBind, KeyMapFunc, KeyBindHash> &keyMap);
     ~KeyMap();
 };
 
