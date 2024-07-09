@@ -18,7 +18,10 @@ void Texture::unbind() {
     glBindTexture(GL_TEXTURE_2D, this->texture);
 }
 
-void Texture::loadPath(const std::string &path) {
+void Texture::loadPath(const std::string &path, bool flipVertically) {
+    if (flipVertically)
+        stbi_set_flip_vertically_on_load(true);
+
     int width, height, componentCount;
 
     unsigned char *data = stbi_load(path.c_str(), &width, &height, &componentCount, 0);

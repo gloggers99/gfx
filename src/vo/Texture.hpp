@@ -16,7 +16,7 @@ public:
     void bind() override;
     void unbind() override;
 
-    void loadPath(const std::string &path);
+    void loadPath(const std::string &path, bool flipVertically = true);
 
     Texture();
     ~Texture();

@@ -109,13 +109,13 @@ int main() {
     GFX::Shader shader = GFX::Shader("defaultShader");
 
     /*
-        Shader Watcher runs on a seperate thread and checks for file changes using inotify,
-        this is linux only for now, but I plan to add windows support soon. Shader Watcher will 
-        ONLY watch the shaders you explicitly attach.
+        Shader Watcher runs on a seperate thread and checks 
+        for file changes using inotify, or the Windows API 
+        on windows. Shader Watcher will ONLY watch the 
+        shaders you explicitly attach.
     */
     GFX::ShaderWatcher watcher = GFX::ShaderWatcher();
     watcher.attach(&shader);
-
 
     // the definition of a vertex is subject to change.
     std::vector<GFX::Vertex> vertices = {
