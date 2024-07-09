@@ -7,17 +7,21 @@ int main() {
     GFX::Camera camera = GFX::Camera(renderer);
 
     GFX::Model model = GFX::Model("obj/armadillo.obj");
+    GFX::Model cube = GFX::Model("obj/test2.obj");
+    cube.transform.scale({0.5, 0.5, 0.5});
 
-    GFX::Shader defaultShader = GFX::Shader("lightingShader");
+    GFX::Shader lightingShader = GFX::Shader("lightingShader");
+    GFX::Shader defaultShader = GFX::Shader("camShader");
 
     GFX::ShaderWatcher shaderWatcher = GFX::ShaderWatcher();
-    shaderWatcher.attach(&defaultShader);
+    shaderWatcher.attach(&lightingShader);
 
-    defaultShader.updateUniform("transform", glm::mat4(1.0f));
+    glm::vec3 lightPosition = glm::vec3(5.0f, 2.0, -5.0);
 
-    defaultShader.updateUniform("lightPos", glm::vec3(5.0, 2.0, -5.0));
-    defaultShader.updateUniform("lightColor", glm::vec3(1.0, 1.0, 1.0));
-    defaultShader.updateUniform("objectColor", glm::vec3(1.0, 0.5, 0.31));
+    lightingShader.updateUniform("transform", glm::mat4(1.0f));
+
+    lightingShader.updateUniform("lightColor", glm::vec3(1.0, 1.0, 1.0));
+    lightingShader.updateUniform("objectColor", glm::vec3(1.0, 0.5, 0.31));
 
     renderer.hideCursor();
     bool showCursor = false;
@@ -38,12 +42,24 @@ int main() {
         shaderWatcher.checkShaders();
 
         camera.handleMouse(renderer);
+        lightingShader.updateUniform("camera", camera.createCameraMatrix(&renderer));
         defaultShader.updateUniform("camera", camera.createCameraMatrix(&renderer));
 
         renderer.clear();
         renderer.clearColor(0.1, 0.1, 0.1, 1.0);
 
-        model.draw(&defaultShader);
+        lightingShader.updateUniform("lightPos", lightPosition);
+        model.draw(&lightingShader);
+
+        lightPosition.x = std::cos(glfwGetTime()) * 10;
+        lightPosition.y = std::sin(glfwGetTime()) * 10;
+        lightPosition.z = std::sin(glfwGetTime()) * 10;
+
+        cube.transform.setTranslation(lightPosition);
+
+        defaultShader.updateUniform("lightPos", lightPosition);
+
+        cube.draw(&defaultShader);
 
         if (renderer.getKey(GLFW_KEY_W))
             camera.move(GFX::Direction::FORWARD, deltaTime * 2.5f);

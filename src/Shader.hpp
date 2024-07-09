@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 
 #include <string>
+#include "Transform.hpp"
 
 class ShaderWatcher {};
 
@@ -28,6 +29,9 @@ public:
     void updateUniform(const std::string &uniformName, glm::mat4 mat4);
     void updateUniform(const std::string &uniformName, glm::vec3 vec3);
     void updateUniform(const std::string &uniformName, float x, float y, float z);
+
+    // TODO: maybe implement this inside of Transform.hpp
+    void updateUniform(const std::string &uniformName, Transform &transform);
 
     // take in a file path without extension
     explicit Shader(const std::string &shaderName);

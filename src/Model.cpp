@@ -194,8 +194,11 @@ bool Model::isLoaded() {
 }
 
 void Model::draw(Shader *shader) {
-    if (this->loaded)
+    if (this->loaded) {
+        shader->updateUniform("transform", transform);
         this->vertexStack.draw(shader);
+        shader->updateUniform("transform", glm::mat4(1.0f));
+    }
 }
 
 Model::Model(std::string path) : modelName("missing name"), path(std::move(path)), vertexStack(VertexStack<Vertex>({ 3, 2, 3 })), loaded(false) {

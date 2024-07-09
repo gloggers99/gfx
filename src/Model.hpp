@@ -31,6 +31,8 @@ private:
     void loadModel();
 
 public:
+    Transform transform;
+
     bool isLoaded();
     void draw(Shader *shader);
 
