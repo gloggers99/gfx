@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.2)
 project(gfx VERSION 1.0 DESCRIPTION "C++ OpenGL Renderer Framework")
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 file(GLOB SRC_FILES ./src/*.cpp)
 file(GLOB SRC_VO_FILES ./src/vo/*.cpp)

@@ -4,7 +4,7 @@
 
 int main() {
     GFX::Renderer renderer = GFX::Renderer();
-    GFX::Camera camera = GFX::Camera(&renderer);
+    GFX::Camera camera = GFX::Camera(renderer);
 
     GFX::Model model = GFX::Model("obj/armadillo.obj");
 
@@ -37,7 +37,7 @@ int main() {
     auto draw = [&](float deltaTime) {
         shaderWatcher.checkShaders();
 
-        camera.handleMouse(&renderer);
+        camera.handleMouse(renderer);
         defaultShader.updateUniform("camera", camera.createCameraMatrix(&renderer));
 
         renderer.clear();

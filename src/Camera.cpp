@@ -16,7 +16,7 @@ glm::mat4 Camera::createViewMatrix() {
     return glm::lookAt(this->cameraPos, this->cameraPos + this->cameraFront, this->cameraUp);
 }
 
-glm::mat4 Camera::createProjectionMatrix(Renderer *renderer) {
+glm::mat4 Camera::createProjectionMatrix(Renderer *renderer) const {
     int width, height;
     renderer->getSize(&width, &height);
 
@@ -46,9 +46,9 @@ void Camera::move(Direction direction, float speed) {
     }
 }
 
-void Camera::handleMouse(Renderer *renderer, float sensitivity) {
+void Camera::handleMouse(Renderer &renderer, float sensitivity) {
     double xpos, ypos;
-    renderer->getCursorPos(&xpos, &ypos);
+    renderer.getCursorPos(&xpos, &ypos);
 
     if (firstMouse)
     {
@@ -80,8 +80,8 @@ void Camera::handleMouse(Renderer *renderer, float sensitivity) {
     cameraFront = glm::normalize(front);
 }
 
-Camera::Camera(Renderer *renderer, float fov) :
-    cameraPos(glm::vec3(0.0f, 0.0f, 3.0f)),
+Camera::Camera(Renderer &renderer, float fov) :
+    cameraPos(glm::vec3(0.0f, 0.0f, 0.0f)),
     cameraFront(glm::vec3(0.0f, 0.0f, -1.0f)),
     cameraUp(glm::vec3(0.0f, 1.0f, 0.0f)),
     fov(fov),
@@ -89,7 +89,7 @@ Camera::Camera(Renderer *renderer, float fov) :
     yaw(-90.0f),
     pitch(0.0f) {
     int w, h;
-    renderer->getSize(&w, &h);
+    renderer.getSize(&w, &h);
 
     this->lastX = static_cast<float>(w) / 2.0f;
     this->lastY = static_cast<float>(h) / 2.0f;
