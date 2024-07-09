@@ -6,6 +6,7 @@
 
 #include "VertexStack.hpp"
 #include "hermes/hermes.hpp"
+#include "Material.hpp"
 
 namespace GFX {
 
@@ -25,6 +26,7 @@ private:
     std::string modelName;
     std::string path;
 
+
     VertexStack<Vertex> vertexStack;
     bool loaded;
 
@@ -32,6 +34,7 @@ private:
 
 public:
     Transform transform;
+    Material material;
 
     bool isLoaded();
     void draw(Shader *shader);

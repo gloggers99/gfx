@@ -1,7 +1,6 @@
 #include "Model.hpp"
 #include "VertexStack.hpp"
 
-#include <algorithm>
 #include <chrono>
 #include <cstdlib>
 #include <exception>
@@ -195,9 +194,12 @@ bool Model::isLoaded() {
 
 void Model::draw(Shader *shader) {
     if (this->loaded) {
+        // TODO: assign each map to a different sampler slot here
         shader->updateUniform("transform", transform);
+        this->material.ambientMap.bind();
         this->vertexStack.draw(shader);
         shader->updateUniform("transform", glm::mat4(1.0f));
+        this->material.ambientMap.unbind();
     }
 }
 

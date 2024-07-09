@@ -6,9 +6,11 @@ int main() {
     GFX::Renderer renderer = GFX::Renderer();
     GFX::Camera camera = GFX::Camera(renderer);
 
-    GFX::Model model = GFX::Model("obj/armadillo.obj");
-    GFX::Model cube = GFX::Model("obj/test2.obj");
-    cube.transform.scale({0.5, 0.5, 0.5});
+    GFX::Model model = GFX::Model("obj/untitled.obj");
+    GFX::Material material = GFX::Material("obj/untitled.mtl");
+    model.material = material;
+    //GFX::Model cube = GFX::Model("obj/test2.obj");
+    //cube.transform.scale({0.5, 0.5, 0.5});
 
     GFX::Shader lightingShader = GFX::Shader("lightingShader");
     GFX::Shader defaultShader = GFX::Shader("camShader");
@@ -55,11 +57,11 @@ int main() {
         lightPosition.y = std::sin(glfwGetTime()) * 10;
         lightPosition.z = std::sin(glfwGetTime()) * 10;
 
-        cube.transform.setTranslation(lightPosition);
+        //cube.transform.setTranslation(lightPosition);
 
         defaultShader.updateUniform("lightPos", lightPosition);
 
-        cube.draw(&defaultShader);
+        //cube.draw(&defaultShader);
 
         if (renderer.getKey(GLFW_KEY_W))
             camera.move(GFX::Direction::FORWARD, deltaTime * 2.5f);
