@@ -1,14 +1,18 @@
 #include "Shader.hpp"
+#include "Camera.hpp"
 
-#include <filesystem>
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
+
 #include <glm/gtc/type_ptr.hpp>
 
+#include <filesystem>
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <utility>
+
 
 namespace GFX {
 
@@ -184,7 +188,13 @@ void Shader::updateUniform(const std::string &uniformName, Transform &transform)
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(transform.getTransform()));
 }
 
-Shader::Shader(const std::string &shaderName) : shaderName(shaderName) {
+void Shader::updateUniform(const std::string &uniformName, GLint i) {
+    GLint location = this->getUniformLocation(uniformName);
+    this->use();
+    glUniform1i(location, i);
+}
+
+Shader::Shader(std::string shaderName) : shaderName(std::move(shaderName)) {
     this->fetchSource();
     this->compile();
 }
@@ -192,5 +202,6 @@ Shader::Shader(const std::string &shaderName) : shaderName(shaderName) {
 Shader::~Shader() {
     glDeleteProgram(this->shaderProgram);
 }
+
 
 }; // namespace GFX

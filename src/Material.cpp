@@ -1,10 +1,27 @@
 #include "Material.hpp"
+#include "hermes/hermes.hpp"
 
 #include <fstream>
 #include <sstream>
 #include <algorithm>
 
 namespace GFX {
+
+void Material::bindMaps() {
+    this->ambientMap.bind();
+    this->diffuseMap.bind();
+    this->specularMap.bind();
+    this->specularHighlightMap.bind();
+    this->alphaMap.bind();
+}
+
+void Material::unbindMaps() {
+    this->ambientMap.unbind();
+    this->diffuseMap.unbind();
+    this->specularMap.unbind();
+    this->specularHighlightMap.unbind();
+    this->alphaMap.unbind();
+}
 
 Material::Material(std::string path) {
     std::ifstream file(path);
@@ -23,7 +40,6 @@ Material::Material(std::string path) {
     std::getline(tmpStream, workDirectory);
     std::reverse(workDirectory.begin(), workDirectory.end());
     workDirectory = workDirectory + "/";
-
 
     std::string line;
     while (std::getline(file, line)) {
@@ -74,25 +90,25 @@ Material::Material(std::string path) {
         else if (prefix == "map_Kd") {
             std::string mapPath;
             ss >> mapPath;
-            this->ambientMap.loadPath(workDirectory + mapPath);
+            this->diffuseMap.loadPath(workDirectory + mapPath);
         }
         // specularMap
         else if (prefix == "map_Ks") {
             std::string mapPath;
             ss >> mapPath;
-            this->ambientMap.loadPath(workDirectory + mapPath);
+            this->specularMap.loadPath(workDirectory + mapPath);
         }
-        // specularHighlight
+        // specularHighlightMap
         else if (prefix == "map_Ns") {
             std::string mapPath;
             ss >> mapPath;
-            this->ambientMap.loadPath(workDirectory + mapPath);
+            this->specularHighlightMap.loadPath(workDirectory + mapPath);
         }
         // alphaMap
         else if (prefix == "map_d") {
             std::string mapPath;
             ss >> mapPath;
-            this->ambientMap.loadPath(workDirectory + mapPath);
+            this->alphaMap.loadPath(workDirectory + mapPath);
         }
     }
 }

@@ -18,6 +18,8 @@ enum class Direction {
 
 class Camera {
 private:
+    Renderer &renderer;
+
     glm::vec3 cameraPos;
     glm::vec3 cameraFront;
     glm::vec3 cameraUp;
@@ -35,12 +37,12 @@ public:
     glm::vec3 getCameraPos();
 
     glm::mat4 createViewMatrix();
-    glm::mat4 createProjectionMatrix(Renderer *renderer) const;
+    glm::mat4 createProjectionMatrix() const;
 
-    glm::mat4 createCameraMatrix(Renderer *renderer);
+    glm::mat4 createCameraMatrix();
 
     void move(Direction direction, float speed = 2.5f);
-    void handleMouse(Renderer &renderer, float sensitivity = 0.5f);
+    void handleMouse(float sensitivity = 0.5f);
 
     explicit Camera(Renderer &renderer, float fov = 90.0f);
     ~Camera();

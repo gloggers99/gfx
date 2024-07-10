@@ -37,7 +37,7 @@ public:
     Material material;
 
     bool isLoaded();
-    void draw(Shader *shader);
+    void draw(Shader &shader);
 
     explicit Model(std::string path);
     ~Model();

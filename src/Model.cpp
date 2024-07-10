@@ -192,14 +192,18 @@ bool Model::isLoaded() {
     return this->loaded;
 }
 
-void Model::draw(Shader *shader) {
+void Model::draw(Shader &shader) {
     if (this->loaded) {
         // TODO: assign each map to a different sampler slot here
-        shader->updateUniform("transform", transform);
-        this->material.ambientMap.bind();
+        shader.updateUniform("transform", transform);
+
+        // bind ambient map
+        this->material.bindMaps();
         this->vertexStack.draw(shader);
-        shader->updateUniform("transform", glm::mat4(1.0f));
-        this->material.ambientMap.unbind();
+        this->material.unbindMaps();
+        //this->material.unbindMaps(shader);
+
+        shader.updateUniform("transform", glm::mat4(1.0f));
     }
 }
 

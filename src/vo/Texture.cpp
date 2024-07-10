@@ -10,11 +10,21 @@ GLuint Texture::get() {
     return this->texture;
 }
 
+void Texture::setSlot(GLenum slot) {
+    this->slot = slot;
+}
+
+GLenum Texture::getSlot() {
+    return this->slot;
+}
+
 void Texture::bind() {
+    glActiveTexture(this->slot);
     glBindTexture(GL_TEXTURE_2D, this->texture);
 }
 
 void Texture::unbind() {
+    glActiveTexture(this->slot);
     glBindTexture(GL_TEXTURE_2D, this->texture);
 }
 
@@ -44,17 +54,22 @@ void Texture::loadPath(const std::string &path, bool flipVertically) {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        this->unbind();
 
         stbi_image_free(data);
 
-        // TODO
+        this->loaded = true;
     } else {
         stbi_image_free(data);
         throw std::runtime_error("Failed to load texture at path: \"" + path + "\"");
     }
 }
 
-Texture::Texture() {
+bool Texture::isLoaded() {
+    return this->loaded;
+}
+
+Texture::Texture(GLenum slot) : slot(slot), loaded(false) {
     glGenTextures(1, &this->texture);
 }
 

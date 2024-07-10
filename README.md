@@ -26,16 +26,13 @@ GFX is a simple C++ graphics library that uses GLFW to create a basic multiplatf
 ![](assets/shaderwatchertest.gif)
 <sub><sup>Automatic shader hot reloading showcase</sup></sub>
 ### Features
-- [X] Easy to use VAO, VBO, and EBO classes
-- [X] Multithreaded insanely fast OBJ importer (12 thousand triangles in 300 milliseconds)
+- [X] VertexStack for automatic VAO creation and dynamic vertex management
+- [X] Multithreaded insanely fast OBJ and MTL importer (300 thousand triangles in ~1000 milliseconds)
 - [X] Declarative assignable keybind map
-- [ ] Texture System (needs to be redone)
 - [X] Multithreaded automatic hot reloadable shader compilation
 - [X] Compatibility with ALL custom opengl drawing code (theoretically you could use GFX to load OpenGL then use OpenGL code to do the rest)
 - [X] Full ImGui implementation (Currently doesn't work on windows)
-- [X] Windows support
-- [X] MacOS support
-- [X] Linux support
+- [X] Cross Platform
 - [X] Logging system implemented with [hermes](https://github.com/gloggers99/hermes)
 ### Installation
 #### Linux/Mac
@@ -45,7 +42,6 @@ You will need to have the following dependencies installed:
 - gcc (g++ in specific)
 - make
 - git
-- GLFW library installed
 ```shell
 git clone https://github.com/gloggers99/gfx.git --recurse-submodules
 cd ./gfx
@@ -117,20 +113,22 @@ int main() {
     GFX::ShaderWatcher watcher = GFX::ShaderWatcher();
     watcher.attach(&shader);
 
-    // the definition of a vertex is subject to change.
-    std::vector<GFX::Vertex> vertices = {
-        {{0.5, -0.5, 0.0}},
-        {{-0.5, -0.5, 0.0}},
-        {{0.0, 0.5, 0.0}}
+    struct MyVertex {
+        glm::vec3 pos;
     };
+    
 
-    GFX::VertexStack stack = GFX::VertexStack(vertices);
+    GFX::VertexStack stack = GFX::VertexStack<MyVertex>({
+        { { 0.5, -0.5, 0.0 } },
+        { { -0.5, -0.5, 0.0 } },
+        { { 0.0, 0.5, 0.0 } }
+    }, { 3 });
 
     auto draw = [&](float deltaTime) {
         // each frame you must call checkShaders to recompile the changed shaders.
         watcher.checkShaders();
-        
         shader.updateUniform("camera", camera.createCameraMatrix(&renderer));
+        
         stack.draw(&shader);
     };
 
@@ -150,20 +148,26 @@ int main() {
     GFX::Renderer renderer = GFX::Renderer();
     GFX::Shader shader = GFX::Shader("defaultShader");
     GFX::Camera camera = GFX::Camera();
-
-    /*
-        GFX::Model uses IndicedVertexStack underneath. As of right now only
-        .obj files are supported, however more formats will be supported in
-        the future.
-
-    */
+    
     GFX::Model model = GFX::Model("path/to/file.obj");
+    
+    // the model loader does NOT automatically load in materials, 
+    // this is subject to change but here is the current way.
+    GFX::Material material = GFX::Material("path/to/file.mtl");
+    model.material = material;
+    
+    // texture maps are automatically loaded by GFX::Material as long 
+    // as they exist, if they don't an error will be thrown.
+    
+    // texture mapping is kind of WIP, the specification for GFX's glsl
+    // features are coming soon.
 
     auto draw = [&](float deltaTime) {
         shader.updateUniform("camera", camera.createCameraMatrix(&renderer));
         // scale the model down a bit
         shader.updateUniform("transform", glm::scale(glm::mat4(1.0f), glm::vec3(0.1f, 0.1f, 0.1f)));
 
+        // make sure you handle the sampler2d in your shader
         model.draw(&shader);
     };
 

@@ -39,11 +39,11 @@ public:
             this->compiled = false;
     }
 
-    void draw(Shader *shader) {
+    void draw(Shader &shader) {
         if (!compiled)
             this->compile();
 
-        shader->use();
+        shader.use();
         this->vao.bind();
         if (indices.empty())
             glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(this->vertices.size()));

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "vo/Texture.hpp"
+#include "Shader.hpp"
 
 #include <string>
 #include <vector>
@@ -36,7 +37,14 @@ public:
     float specularExponent, dissolve, opticalDensity;
     IlluminationModel illuminationModel;
 
-    Texture ambientMap, diffuseMap, specularMap, specularHighlight, alphaMap;
+    Texture ambientMap = Texture(GL_TEXTURE0);
+    Texture diffuseMap = Texture(GL_TEXTURE1);
+    Texture specularMap = Texture(GL_TEXTURE2);
+    Texture specularHighlightMap = Texture(GL_TEXTURE3);
+    Texture alphaMap = Texture(GL_TEXTURE4);
+
+    void bindMaps();
+    void unbindMaps();
 
     explicit Material(std::string path);
     Material();
