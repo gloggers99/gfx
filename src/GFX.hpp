@@ -13,6 +13,8 @@
 #include "VertexStack.hpp"
 #include "Model.hpp"
 #include "KeyMap.hpp"
+#include "Transform.hpp"
+#include "Material.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/ext/matrix_transform.hpp>

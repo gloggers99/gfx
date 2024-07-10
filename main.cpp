@@ -21,7 +21,7 @@ int main() {
     glm::vec3 lightPosition = glm::vec3(5.0f, 2.0, -5.0);
 
     lightingShader.updateUniform("lightColor", glm::vec3(1.0, 1.0, 1.0));
-    lightingShader.updateUniform("objectColor", glm::vec3(1.0, 0.5, 0.31));
+    lightingShader.updateUniform("objectColor", glm::vec3(1.0, 1.0, 1.0));
 
     renderer.hideCursor();
     bool showCursor = false;

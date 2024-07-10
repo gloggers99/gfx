@@ -31,6 +31,43 @@ void Renderer::key_callback(GLFWwindow *window, int key, int scancode, int actio
     renderer->keyMap.callback(window, key, scancode, action, mods);
 }
 
+void Renderer::initGLFW() {
+    if (!glfwInit())
+        throw std::runtime_error("Failed to initialize GLFW");
+
+    glfwSetErrorCallback(Renderer::error_callback);
+}
+
+void Renderer::createWindow(const std::string &windowName, bool fullscreen, int width, int height) {
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_FLOATING, 1);
+
+    GLFWmonitor *monitor = glfwGetPrimaryMonitor();
+    const GLFWvidmode *mode = glfwGetVideoMode(monitor);
+
+    this->window = glfwCreateWindow(fullscreen ? mode->width : width,
+                                    fullscreen ? mode->height : height,
+                                    this->windowName.c_str(),
+                                    fullscreen ? monitor : nullptr,
+                                    nullptr);
+
+    if (!this->window)
+        throw std::runtime_error("Failed to create window");
+
+    glfwMakeContextCurrent(this->window);
+    glfwSetWindowUserPointer(this->window, this);
+    glfwSetFramebufferSizeCallback(this->window, Renderer::framebuffer_size_callback);
+    glfwSetKeyCallback(this->window, Renderer::key_callback);
+    gladLoadGL(glfwGetProcAddress);
+
+    glViewport(0,
+               0,
+               fullscreen ? mode->width : width,
+               fullscreen ? mode->height : height);
+    glEnable(GL_DEPTH_TEST);
+}
+
 void Renderer::quit() {
     glfwSetWindowShouldClose(this->window, GLFW_TRUE);
 }
@@ -100,31 +137,11 @@ void Renderer::loop(const std::function<void(float)>& loopFunction) {
     }
 }
 
-Renderer::Renderer(std::string windowName) : windowName(std::move(windowName)) {
+Renderer::Renderer(std::string windowName, bool fullscreen) : windowName(std::move(windowName)) {
     this->log("initializing renderer...");
 
-    if (!glfwInit())
-        throw std::runtime_error("Failed to initialize GLFW");
-
-    glfwSetErrorCallback(Renderer::error_callback);
-
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_FLOATING, 1);
-
-    this->window = glfwCreateWindow(640, 480, this->windowName.c_str(), nullptr, nullptr);
-
-    if (!this->window)
-        throw std::runtime_error("Failed to create window");
-
-    glfwMakeContextCurrent(this->window);
-    glfwSetWindowUserPointer(this->window, this);
-    glfwSetFramebufferSizeCallback(this->window, Renderer::framebuffer_size_callback);
-    glfwSetKeyCallback(this->window, Renderer::key_callback);
-    gladLoadGL(glfwGetProcAddress);
-    
-    glViewport(0, 0, 640, 480);
-    glEnable(GL_DEPTH_TEST);
+    this->initGLFW();
+    this->createWindow(windowName, fullscreen);
 
     // setup imgui
 #if not defined(__MINGW32__)
@@ -151,5 +168,7 @@ Renderer::~Renderer() {
     glfwTerminate();
 #endif
 }
+
+
 
 }; // namespace GFX
