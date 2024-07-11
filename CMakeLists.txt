@@ -65,6 +65,8 @@ ELSE()
     target_include_directories(gfx_test PUBLIC include)
     target_include_directories(gfx PUBLIC include/imgui)
     target_include_directories(gfx_test PUBLIC include/imgui)
+    target_include_directories(gfx PUBLIC include/glm)
+    target_include_directories(gfx_test PUBLIC include/glm)
     target_compile_options(gfx PRIVATE -Wall -Wextra)
 
     install(TARGETS gfx
