@@ -140,6 +140,8 @@ int main() {
 ```
 ### OBJ Loader
 The OBJ loader in GFX is made completely from scratch using bare C++, priority is speed and accuracy and compatibility. It is capable of loading a model with ~12 thousand faces in ~300 milliseconds, and a model with 345 thousand faces (stanford armadillo) in just over 1100 milliseconds. 
+> [!NOTE]
+> Models load 2x faster on Linux, im working on optimizing this more on windows
 ```cpp
 #include <GFX.h>
 
