@@ -10,7 +10,7 @@ int main() {
 
     GFX::Model light = GFX::Model("obj/test2.obj");
     light.transform.scale({0.5, 0.5, 0.5});
-    GFX::Model model = GFX::Model("obj/circle.obj");
+    GFX::Model model = GFX::Model("obj/armadillo.obj");
     GFX::Material material = GFX::Material("obj/untitled.mtl");
     model.material = material;
 

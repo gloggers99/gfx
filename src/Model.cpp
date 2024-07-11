@@ -59,19 +59,29 @@ void Model::loadModel() {
     std::vector<glm::vec3> tmpNormals;
 
     std::vector<unsigned int> tmpIndices;
-    std::vector<int> tmpTexCoordIndices;  // Use int to allow -1 for missing indices
-    std::vector<int> tmpNormalIndices;    // Use int to allow -1 for missing indices
+    std::vector<int> tmpTexCoordIndices;
+    std::vector<int> tmpNormalIndices;
 
+    // load whole file into a buffer
     std::ifstream file(this->path);
     if (!file.is_open())
         throw std::runtime_error("Model could not be opened.");
 
-    std::string line;
-    while (std::getline(file, line)) {
-        // trim
-        while (!line.empty() && isspace(line.back())) line.pop_back();
+    std::string buffer;
+    std::stringstream fileDumper;
+    fileDumper << file.rdbuf();
+    buffer = fileDumper.str();
 
-        std::stringstream ss(line);
+    file.close();
+
+    std::stringstream bufferStream(buffer);
+
+    std::string line;
+    while (std::getline(bufferStream, line)) {
+        // trim
+        //while (!line.empty() && isspace(line.back())) line.pop_back();
+
+        std::istringstream ss(line);
         std::string prefix;
         ss >> prefix;
 
@@ -143,8 +153,6 @@ void Model::loadModel() {
             ss >> this->modelName;
         }
     }
-
-    file.close();
 
     if (!tmpTexCoordIndices.empty() || !tmpNormalIndices.empty()) {
         // Utilize hashing for faster comparison of Vertex's
