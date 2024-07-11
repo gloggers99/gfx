@@ -5,6 +5,7 @@
 #include "vo/EBO.hpp"
 #include "vo/FBO.hpp"
 #include "vo/RBO.hpp"
+#include "vo/Texture.hpp"
 
 #include "Renderer.hpp"
 #include "Shader.hpp"
@@ -15,6 +16,8 @@
 #include "KeyMap.hpp"
 #include "Transform.hpp"
 #include "Material.hpp"
+
+#include <imgui.h>
 
 #include <glm/glm.hpp>
 #include <glm/ext/matrix_transform.hpp>

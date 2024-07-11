@@ -28,7 +28,7 @@ GFX is a simple C++ graphics library that uses GLFW to create a basic multiplatf
 <sub><sup>Automatic shader hot reloading showcase</sup></sub>
 ### Features
 - [X] VertexStack for automatic VAO creation and dynamic vertex management
-- [X] Multithreaded insanely fast OBJ and MTL importer (300 thousand triangles in ~1000 milliseconds)
+- [X] Insanely fast OBJ and MTL importer (300 thousand triangles in ~1000 milliseconds, leverages hashing and more features to increase speed)
 - [X] Declarative assignable keybind map
 - [X] Multithreaded automatic hot reloadable shader compilation
 - [X] Compatibility with ALL custom opengl drawing code (theoretically you could use GFX to load OpenGL then use OpenGL code to do the rest)
@@ -139,7 +139,7 @@ int main() {
 }
 ```
 ### OBJ Loader
-The OBJ loader in GFX is made completely from scratch using bare C++, it is multithreaded (ONLY for loading the file into vertices, the GPU object is made on the main thread) priority is speed and accuracy and compatibility. It is capable of loading a model with ~12 thousand faces in ~300 milliseconds, and a model with 345 thousand faces (stanford armadillo) in just over 1100 milliseconds. 
+The OBJ loader in GFX is made completely from scratch using bare C++, priority is speed and accuracy and compatibility. It is capable of loading a model with ~12 thousand faces in ~300 milliseconds, and a model with 345 thousand faces (stanford armadillo) in just over 1100 milliseconds. 
 > [!CAUTION]
 > Do not import models that use quads, if you are using blender export with the triangulate toggle on. Loading quads is a WIP feature.
 ```cpp

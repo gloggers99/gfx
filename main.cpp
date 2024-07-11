@@ -5,12 +5,12 @@
 #include <imgui.h>
 
 int main() {
-    GFX::Renderer renderer = GFX::Renderer();
+    GFX::Renderer renderer = GFX::Renderer("gfx_test");
     GFX::Camera camera = GFX::Camera(renderer);
 
     GFX::Model light = GFX::Model("obj/test2.obj");
     light.transform.scale({0.5, 0.5, 0.5});
-    GFX::Model model = GFX::Model("obj/untitled.obj");
+    GFX::Model model = GFX::Model("obj/circle.obj");
     GFX::Material material = GFX::Material("obj/untitled.mtl");
     model.material = material;
 
@@ -41,16 +41,15 @@ int main() {
     );
 
     auto draw = [&](float deltaTime) {
-        ImGui::Text("test");
-
         shaderWatcher.checkShaders();
 
-        camera.handleMouse();
+        if (!showCursor) camera.handleMouse(0.25f);
+
         lightingShader.updateUniform("camera", camera.createCameraMatrix());
         defaultShader.updateUniform("camera", camera.createCameraMatrix());
 
         renderer.clear();
-        renderer.clearColor(0.1, 0.1, 0.1, 1.0);
+        renderer.clearColor(0.2, 0.2, 0.3, 1.0);
 
         lightingShader.updateUniform("lightPos", lightPosition);
         model.draw(lightingShader);

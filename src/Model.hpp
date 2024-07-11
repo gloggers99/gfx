@@ -20,15 +20,10 @@ class Model {
 private:
     Hermes::Log<char> log = Hermes::Log("GFX::Model", std::cout);
 
-    std::thread importThread;
-    std::mutex importThreadLock;
-
     std::string modelName;
     std::string path;
 
-
     VertexStack<Vertex> vertexStack;
-    bool loaded;
 
     void loadModel();
 
@@ -36,10 +31,9 @@ public:
     Transform transform;
     Material material;
 
-    bool isLoaded();
     void draw(Shader &shader);
 
-    explicit Model(std::string path);
+    explicit Model(const std::string& path);
     ~Model();
 };
 
