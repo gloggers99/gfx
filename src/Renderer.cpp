@@ -4,12 +4,10 @@
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
 
-#if not defined(__MINGW32__)
 #include <imgui.h>
 
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
-#endif
 
 #include <iostream>
 #include <stdexcept>
@@ -118,20 +116,19 @@ void Renderer::swapBuffers() {
 
 void Renderer::loop(const std::function<void(float)>& loopFunction) {
     while (!this->shouldClose()) {
-#if not defined(__MINGW32__)
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-#endif
+
         this->currentFrame = glfwGetTime();
         this->deltaTime = this->currentFrame - this->lastFrame;
         this->lastFrame = this->currentFrame;
         this->clear();
         loopFunction(this->deltaTime);
-#if not defined(__MINGW32__)
+
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-#endif
+
         this->swapBuffers();
         glfwPollEvents();
     }
@@ -144,7 +141,6 @@ Renderer::Renderer(std::string windowName, bool fullscreen) : windowName(std::mo
     this->createWindow(windowName, fullscreen);
 
     // setup imgui
-#if not defined(__MINGW32__)
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     
@@ -154,19 +150,16 @@ Renderer::Renderer(std::string windowName, bool fullscreen) : windowName(std::mo
 
     ImGui_ImplGlfw_InitForOpenGL(this->window, true);
     ImGui_ImplOpenGL3_Init();
-#endif
     this->log("renderer initialized");
 }
 
 Renderer::~Renderer() {
-#if not defined(__MINGW32__)
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 
     glfwDestroyWindow(this->window);
     glfwTerminate();
-#endif
 }
 
 

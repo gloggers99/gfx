@@ -2,6 +2,8 @@
 
 #include "src/GFX.hpp"
 
+#include <imgui.h>
+
 int main() {
     GFX::Renderer renderer = GFX::Renderer();
     GFX::Camera camera = GFX::Camera(renderer);
@@ -39,6 +41,8 @@ int main() {
     );
 
     auto draw = [&](float deltaTime) {
+        ImGui::Text("test");
+
         shaderWatcher.checkShaders();
 
         camera.handleMouse();
