@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 file(GLOB SRC_FILES ./src/*.cpp)
 file(GLOB SRC_VO_FILES ./src/vo/*.cpp)
+file(GLOB SRC_COMPONENT_FILES ./src/components/*.cpp)
 file(GLOB SRC_SHADERWATCHER_FILES ./src/shaderwatcher/*.cpp)
 file(GLOB IMGUI_FILES ./include/imgui/*.cpp)
 
@@ -13,6 +14,7 @@ IF (WIN32)
             ${SRC_FILES}
             ${SRC_VO_FILES}
             ${SRC_SHADERWATCHER_FILES}
+            ${SRC_COMPONENT_FILES}
             ${IMGUI_FILES}
             include/imgui/backends/imgui_impl_glfw.cpp
             include/imgui/backends/imgui_impl_opengl3.cpp
@@ -21,6 +23,7 @@ IF (WIN32)
     add_library(gfx STATIC
             ${SRC_FILES}
             ${SRC_VO_FILES}
+            ${SRC_COMPONENT_FILES}
             ${SRC_SHADERWATCHER_FILES}
             ${IMGUI_FILES}
             include/imgui/backends/imgui_impl_glfw.cpp
@@ -46,6 +49,7 @@ ELSE()
         ${SRC_FILES} 
         ${SRC_VO_FILES}
         ${SRC_SHADERWATCHER_FILES}
+        ${SRC_COMPONENT_FILES}
         ${IMGUI_FILES} 
         include/imgui/backends/imgui_impl_glfw.cpp 
         include/imgui/backends/imgui_impl_opengl3.cpp)
@@ -54,6 +58,7 @@ ELSE()
         ${SRC_FILES} 
         ${SRC_VO_FILES}
         ${SRC_SHADERWATCHER_FILES}
+        ${SRC_COMPONENT_FILES}
         ${IMGUI_FILES} 
         include/imgui/backends/imgui_impl_glfw.cpp 
         include/imgui/backends/imgui_impl_opengl3.cpp

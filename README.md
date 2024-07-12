@@ -30,9 +30,10 @@ GFX is a simple C++ graphics library that uses GLFW to create a basic multiplatf
 - [X] VertexStack for automatic VAO creation and dynamic vertex management
 - [X] Insanely fast OBJ and MTL importer (300 thousand triangles in ~1000 milliseconds, leverages hashing and more features to increase speed)
 - [X] Declarative assignable keybind map
+- [X] "Fairing" system (Simple components)
 - [X] Multithreaded automatic hot reloadable shader compilation
 - [X] Compatibility with ALL custom opengl drawing code (theoretically you could use GFX to load OpenGL then use OpenGL code to do the rest)
-- [X] Full ImGui implementation
+- [X] Full ImGui implementation (GFX::ImGuiThemes for automatic theming)
 - [X] Cross Platform
 - [X] Logging system implemented with [hermes](https://github.com/gloggers99/hermes)
 ### Installation

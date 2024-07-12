@@ -7,6 +7,8 @@
 #include "vo/RBO.hpp"
 #include "vo/Texture.hpp"
 
+#include "extra/ImGuiThemes.hpp"
+
 #include "Renderer.hpp"
 #include "Shader.hpp"
 #include "Camera.hpp"
@@ -14,8 +16,8 @@
 #include "VertexStack.hpp"
 #include "Model.hpp"
 #include "KeyMap.hpp"
-#include "Transform.hpp"
-#include "Material.hpp"
+#include "components/Transform.hpp"
+#include "components/Material.hpp"
 
 #include <imgui.h>
 

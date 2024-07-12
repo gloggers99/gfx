@@ -1,12 +1,14 @@
 #pragma once
 
-#include "vo/Texture.hpp"
-#include "Shader.hpp"
+#include "IFairing.hpp"
+
+#include "../vo/Texture.hpp"
+#include "../Shader.hpp"
 
 #include <string>
 #include <vector>
 
-#include <glm/glm.hpp>
+#include "glm/glm/glm.hpp"
 
 namespace GFX {
 
@@ -31,7 +33,7 @@ enum class IlluminationModel {
 
 // this was written in less than an hour, im actually insane
 
-class Material {
+class Material : IFairing<void> {
 public:
     glm::vec3 ambient, diffuse, specular;
     float specularExponent, dissolve, opticalDensity;
@@ -43,10 +45,20 @@ public:
     Texture specularHighlightMap = Texture(GL_TEXTURE3);
     Texture alphaMap = Texture(GL_TEXTURE4);
 
+    /** Bind all the texture maps available
+     *
+     */
     void bindMaps();
+
+    /** Unbind all the texture maps available
+     *
+     */
     void unbindMaps();
 
-    explicit Material(std::string path);
+    void apply() override;
+    void unapply() override;
+
+    explicit Material(const std::string& path);
     Material();
     ~Material();
 };

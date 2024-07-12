@@ -182,12 +182,6 @@ void Shader::updateUniform(const std::string &uniformName, float x, float y, flo
     glUniform3f(location, x, y, z);
 }
 
-void Shader::updateUniform(const std::string &uniformName, Transform &transform) {
-    GLint location = this->getUniformLocation(uniformName);
-    this->use();
-    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(transform.getTransform()));
-}
-
 void Shader::updateUniform(const std::string &uniformName, GLint i) {
     GLint location = this->getUniformLocation(uniformName);
     this->use();

@@ -2,8 +2,6 @@
 
 #include "src/GFX.hpp"
 
-#include <imgui.h>
-
 int main() {
     GFX::Renderer renderer = GFX::Renderer("gfx_test");
     GFX::Camera camera = GFX::Camera(renderer);
@@ -39,6 +37,8 @@ int main() {
                 renderer.quit();
             }
     );
+
+    GFX::ImGuiThemes::Spectrum();
 
     auto draw = [&](float deltaTime) {
         shaderWatcher.checkShaders();

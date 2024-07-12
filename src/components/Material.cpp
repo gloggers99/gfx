@@ -23,7 +23,15 @@ void Material::unbindMaps() {
     this->alphaMap.unbind();
 }
 
-Material::Material(std::string path) {
+void Material::apply() {
+    this->bindMaps();
+}
+
+void Material::unapply() {
+    this->unbindMaps();
+}
+
+Material::Material(const std::string& path) {
     std::ifstream file(path);
 
     if (!file.is_open())

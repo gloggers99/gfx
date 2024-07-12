@@ -6,7 +6,8 @@
 
 #include "VertexStack.hpp"
 #include "hermes/hermes.hpp"
-#include "Material.hpp"
+#include "components/Material.hpp"
+#include "components/Transform.hpp"
 
 namespace GFX {
 

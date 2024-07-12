@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include "Transform.hpp"
+#include "../Shader.hpp"
 
 namespace GFX {
 
@@ -72,6 +73,14 @@ void Transform::setRotation(glm::quat rotation) {
 
 void Transform::reset() {
     this->transform = glm::mat4(1.0f);
+}
+
+void Transform::apply() {
+    this->fairingData->updateUniform("transform", this->transform);
+}
+
+void Transform::unapply() {
+    this->fairingData->updateUniform("transform", glm::mat4(1.0f));
 }
 
 Transform::Transform() : transform(glm::mat4(1.0f)) {}

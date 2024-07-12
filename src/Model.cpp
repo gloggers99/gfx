@@ -225,14 +225,14 @@ void Model::loadModel() {
 }
 
 void Model::draw(Shader &shader) {
-    shader.updateUniform("transform", transform);
+    this->transform.setFairingData(&shader);
+    this->transform.apply();
+    this->material.apply();
 
-    // bind ambient map
-    this->material.bindMaps();
     this->vertexStack.draw(shader);
-    this->material.unbindMaps();
 
-    shader.updateUniform("transform", glm::mat4(1.0f));
+    this->material.unapply();
+    this->transform.unapply();
 }
 
 Model::Model(const std::string& path) : modelName("missing name"), path(path), vertexStack(VertexStack<Vertex>({ 3, 2, 3 })) {
