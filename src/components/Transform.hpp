@@ -18,7 +18,7 @@ typedef struct {
     glm::vec4 perspective;
 } MatrixComponents;
 
-class Transform : public IFairing<Shader> {
+class Transform : public IFairing {
 private:
     glm::mat4 transform;
 

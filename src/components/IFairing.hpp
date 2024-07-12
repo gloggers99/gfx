@@ -1,28 +1,68 @@
 #pragma once
 
-#include <memory>
 #include <string>
+#include <typeinfo>
 
-template<typename T = void>
+namespace GFX {
+
+class FairingDataMissingException : public std::exception {
+public:
+    [[nodiscard]] const char *what() const noexcept override {
+        return "Fairing data is missing.";
+    }
+};
+
+class FairingDataInvalidException : public std::exception {
+public:
+    [[nodiscard]] const char *what() const noexcept override {
+        return "Fairing data is invalid.";
+    }
+};
+
 class IFairing {
 protected:
     /** Data shared within the Fairing
      *
      */
-    T *fairingData;
+    void *fairingData = nullptr;
 
 public:
-    /** Set the shared pointer within the Fairing
+    /** Wrapper with safety features to retrieve and validate the fairing data
      *
+     * @note It should be noted that the data returned can still be invalid or mismatched, this isn't the safest implementation but it works for now.
+     * @note This function will throw a FairingDataMissingException if the data is missing and a FairingDataInvalidException if the data is invalid.
+     *
+     * @tparam T The type of the data to retrieve
+     * @return The data within the Fairing static_casted to the type T
      */
-    void setFairingData(T *data) {
-        this->fairingData = data;
+    template<typename T>
+    T *validateData() {
+        if (this->fairingData == nullptr)
+            throw FairingDataMissingException();
+
+        T *data = static_cast<T *>(this->fairingData);
+
+        if (data == nullptr)
+            throw FairingDataInvalidException();
+
+        return static_cast<T*>(data);
     }
 
-    /** Get the shared pointer within the Fairing
+    /** Set the void pointer within the Fairing
      *
      */
-    T *getFairingData() {
+    template<typename T>
+    void setFairingData(T *data) {
+        if (data == nullptr)
+            throw FairingDataInvalidException();
+
+        this->fairingData = static_cast<void*>(data);
+    }
+
+    /** Get the void pointer within the Fairing
+     *
+     */
+    void *getFairingData() {
         return this->fairingData;
     }
 
@@ -40,3 +80,5 @@ public:
 
     virtual ~IFairing() = default;
 };
+
+} // namespace GFX

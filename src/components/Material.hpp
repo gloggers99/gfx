@@ -33,7 +33,7 @@ enum class IlluminationModel {
 
 // this was written in less than an hour, im actually insane
 
-class Material : IFairing<void> {
+class Material : IFairing {
 public:
     glm::vec3 ambient, diffuse, specular;
     float specularExponent, dissolve, opticalDensity;

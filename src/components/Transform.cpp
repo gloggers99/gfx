@@ -76,11 +76,11 @@ void Transform::reset() {
 }
 
 void Transform::apply() {
-    this->fairingData->updateUniform("transform", this->transform);
+    this->validateData<Shader>()->updateUniform("transform", this->transform);
 }
 
 void Transform::unapply() {
-    this->fairingData->updateUniform("transform", glm::mat4(1.0f));
+    this->validateData<Shader>()->updateUniform("transform", this->transform);
 }
 
 Transform::Transform() : transform(glm::mat4(1.0f)) {}

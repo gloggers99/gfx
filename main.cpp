@@ -52,7 +52,7 @@ int main() {
         renderer.clearColor(0.2, 0.2, 0.3, 1.0);
 
         lightingShader.updateUniform("lightPos", lightPosition);
-        model.draw(lightingShader);
+        model.draw(&lightingShader);
 
         lightPosition.x = std::cos(glfwGetTime()) * 10;
         lightPosition.y = std::sin(glfwGetTime()) * 10;
@@ -61,7 +61,7 @@ int main() {
         light.transform.setTranslation(lightPosition);
 
         defaultShader.updateUniform("lightPos", lightPosition);
-        light.draw(defaultShader);
+        light.draw(&defaultShader);
 
         if (renderer.getKey(GLFW_KEY_W))
             camera.move(GFX::Direction::FORWARD, deltaTime * 2.5f);

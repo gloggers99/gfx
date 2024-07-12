@@ -32,7 +32,7 @@ public:
     Transform transform;
     Material material;
 
-    void draw(Shader &shader);
+    void draw(Shader *shader);
 
     explicit Model(const std::string& path);
     ~Model();

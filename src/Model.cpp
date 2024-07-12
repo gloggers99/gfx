@@ -62,7 +62,8 @@ void Model::loadModel() {
     std::vector<int> tmpTexCoordIndices;
     std::vector<int> tmpNormalIndices;
 
-    // load whole file into a buffer
+    // load whole file into a buffer, this
+    // should theoretically speed things up
     std::ifstream file(this->path);
     if (!file.is_open())
         throw std::runtime_error("Model could not be opened.");
@@ -224,12 +225,12 @@ void Model::loadModel() {
     this->log("Model \'" + this->modelName + "\' loaded in " + std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count()) + "ms");
 }
 
-void Model::draw(Shader &shader) {
-    this->transform.setFairingData(&shader);
+void Model::draw(Shader *shader) {
+    this->transform.setFairingData(shader);
     this->transform.apply();
     this->material.apply();
 
-    this->vertexStack.draw(shader);
+    this->vertexStack.draw(*shader);
 
     this->material.unapply();
     this->transform.unapply();
