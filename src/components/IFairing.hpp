@@ -6,8 +6,6 @@
 template<typename T = void>
 class IFairing {
 protected:
-    std::string fairingName;
-
     /** Data shared within the Fairing
      *
      */
