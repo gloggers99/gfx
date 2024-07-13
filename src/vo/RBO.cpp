@@ -15,10 +15,9 @@ void RBO::unbind() {
 }
 
 void RBO::setRenderBufferStorage(GLenum type, Renderer *renderer) {
-    int w, h;
-    renderer->getSize(&w, &h);
+    auto size = renderer->getSize();
 
-    glRenderbufferStorage(GL_RENDERBUFFER, type, w, h);
+    glRenderbufferStorage(GL_RENDERBUFFER, type, size.first, size.second);
 }
 
 RBO::RBO() {

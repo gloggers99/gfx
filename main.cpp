@@ -8,7 +8,7 @@ int main() {
 
     GFX::Model light = GFX::Model("obj/test2.obj");
     light.transform.scale({0.5, 0.5, 0.5});
-    GFX::Model model = GFX::Model("obj/armadillo.obj");
+    GFX::Model model = GFX::Model("obj/circle.obj");
     GFX::Material material = GFX::Material("obj/untitled.mtl");
     model.material = material;
 
@@ -47,6 +47,7 @@ int main() {
 
         lightingShader.updateUniform("camera", camera.createCameraMatrix());
         defaultShader.updateUniform("camera", camera.createCameraMatrix());
+        lightingShader.updateUniform("viewPos", camera.getCameraPos());
 
         renderer.clear();
         renderer.clearColor(0.2, 0.2, 0.3, 1.0);

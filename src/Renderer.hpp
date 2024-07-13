@@ -50,7 +50,6 @@ private:
                       int height = 480);
 
 public:
-    // keyMap being public should be fine
     KeyMap keyMap;
 
     /**
@@ -65,21 +64,17 @@ public:
      */
     GLint getKey(int key);
 
-    /**
-     * Get the window size and put it in two pointers TODO: ALSO CHANGE THIS!!!
+    /** Get size of window
      *
-     * @param width Width of the window
-     * @param height Height of the window
+     * @return std::pair<int, int> of window size
      */
-    void getSize(int *width, int *height);
+    std::pair<int, int> getSize();
 
-    /**
-     * Get the cursor position and put it into two double pointers TODO: CHANGE THIS!!!
+    /** Get the cursor position
      *
-     * @param xpos X position of the mouse
-     * @param ypos Y position of the mouse
+     * @return std::pair<double, double> of cursor position
      */
-    void getCursorPos(double *xpos, double *ypos);
+    std::pair<double, double> getCursorPos();
 
     /**
      * Enable wireframe drawing

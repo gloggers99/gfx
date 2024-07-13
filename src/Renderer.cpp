@@ -74,12 +74,20 @@ GLint Renderer::getKey(int key) {
     return glfwGetKey(this->window, key);
 }
 
-void Renderer::getSize(int *width, int *height) {
-    glfwGetFramebufferSize(this->window, width, height);
+std::pair<int, int> Renderer::getSize() {
+    int width, height;
+
+    glfwGetFramebufferSize(this->window, &width, &height);
+
+    return std::make_pair(width, height);
 }
 
-void Renderer::getCursorPos(double *xpos, double *ypos) {
-    glfwGetCursorPos(this->window, xpos, ypos);
+std::pair<double, double> Renderer::getCursorPos() {
+    double xpos, ypos;
+
+    glfwGetCursorPos(this->window, &xpos, &ypos);
+
+    return std::make_pair(xpos, ypos);
 }
 
 void Renderer::enableWireframe() {
