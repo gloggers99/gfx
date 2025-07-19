@@ -1,9 +1,0 @@
-[submodule "include/imgui"]
-	path = include/imgui
-	url = https://github.com/ocornut/imgui
-[submodule "include/hermes"]
-	path = include/hermes
-	url = https://github.com/gloggers99/hermes
-[submodule "include/glm"]
-	path = include/glm
-	url = https://github.com/g-truc/glm
