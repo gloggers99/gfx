@@ -1,0 +1,4 @@
+flake.lock
+builddir
+.cache
+
