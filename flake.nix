@@ -12,6 +12,9 @@
         buildInputs = with pkgs; [
           gcc
           glfw
+          glm
+          meson
+          ninja
         ];
       };
     };
