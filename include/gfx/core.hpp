@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 
 #include <memory>
+#include <utility>
 
 #include "gfx/pipeline.hpp"
 #include "window_spec.hpp"
@@ -30,11 +31,18 @@ namespace gfx {
         core(const window_spec &spec = {});
         ~core();
 
-        /// Set the current pipeline
-        template<typename pipeline_type>
-        void set_pipeline() {
-            
+        /// Set the current pipeline.
+        /// @tparam pipeline_type Type of the pipeline inherited class.
+        /// @param pipeline_args Optional arguments to pass to the
+        ///                      pipeline inherited class constructor.
+        template<typename pipeline_type, typename ...pipeline_args_types>
+        void set_pipeline(pipeline_args_types &&...pipeline_args) {
+            auto new_pipeline = std::make_unique<pipeline_type>();
+
+            this->current_pipeline = std::move(new_pipeline);
         }
+
+        void run_pipeline();
     };
 
 } // namespace gfx

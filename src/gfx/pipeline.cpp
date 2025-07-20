@@ -4,6 +4,9 @@
 
 namespace gfx {
 
+    pipeline::pipeline() = default;
+    pipeline::~pipeline() = default;
+
     pipeline_status pipeline::update(const core &core_instance) {
         return pipeline_status::CONTINUE;
     }

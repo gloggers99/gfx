@@ -1,3 +1,5 @@
+#include "gfx/pipeline.hpp"
+#include <cstdio>
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 #include <glad/gl.h>
@@ -47,14 +49,7 @@ namespace gfx {
         
         //  TODO: Utilize some kind of logging software, maybe hermes (my own) 
         //        like the original gfx code.
-        printf("GLFW platform: %s\n", glfwGetPlatform() == GLFW_PLATFORM_WAYLAND ? "Wayland" : "X11");
-
-        while (!glfwWindowShouldClose(this->window.get())) {
-            glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
-            glfwSwapBuffers(this->window.get());
-            glfwPollEvents();
-        }
+        //printf("GLFW platform: %s\n", glfwGetPlatform() == GLFW_PLATFORM_WAYLAND ? "Wayland" : "X11");
     }
 
     core::~core() {
@@ -62,6 +57,16 @@ namespace gfx {
         // gfx will happen here.
 
         glfwTerminate();
+    }
+
+    void core::run_pipeline() {
+        while (!glfwWindowShouldClose(this->window.get())) {
+            if (this->current_pipeline->update(*this) == pipeline_status::BREAK)
+                glfwSetWindowShouldClose(this->window.get(), 1);
+
+            glfwSwapBuffers(this->window.get());
+            glfwPollEvents();
+        }
     }
 
 } // namespace gfx
